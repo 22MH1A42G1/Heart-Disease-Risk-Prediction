@@ -1,10 +1,20 @@
-# Heart-Disease-Risk-Prediction
+# Heart-Disease-Risk-Prediction federated learning
 
 ## Problem Statement
 Cardiovascular diseases (CVDs) are the leading cause of death globally, claiming approximately 17.9 million lives each year. Early detection and prediction of heart disease risk can significantly improve patient outcomes. However, training accurate ML models traditionally requires centralizing sensitive patient data, raising serious privacy concerns and regulatory challenges (HIPAA, GDPR).
 
 This project addresses this challenge by implementing a federated learning approach that enables collaborative model training across multiple healthcare institutions without sharing raw patient data.
 
+## Project Objectives
+> Develop a heart disease prediction model using federated learning
+
+> Ensure patient data privacy through decentralized training
+
+> Achieve high prediction accuracy comparable to centralized models
+
+> Demonstrate practical implementation of privacy-preserving ML
+
+> Create an intuitive web interface for healthcare professionals
 
 **Use your preferred IDE**
 
@@ -49,6 +59,5 @@ This project is built with:
 - Vite
 - TypeScript
 - React
-- shadcn-ui
 - Tailwind CSS
 
