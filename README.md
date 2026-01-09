@@ -1,18 +1,10 @@
-# Welcome to your Lovable project
+# Heart-Disease-Risk-Prediction
 
-## Project info
+## Problem Statement
+Cardiovascular diseases (CVDs) are the leading cause of death globally, claiming approximately 17.9 million lives each year. Early detection and prediction of heart disease risk can significantly improve patient outcomes. However, training accurate ML models traditionally requires centralizing sensitive patient data, raising serious privacy concerns and regulatory challenges (HIPAA, GDPR).
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+This project addresses this challenge by implementing a federated learning approach that enables collaborative model training across multiple healthcare institutions without sharing raw patient data.
 
-## How can I edit this code?
-
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
 
 **Use your preferred IDE**
 
@@ -60,14 +52,3 @@ This project is built with:
 - shadcn-ui
 - Tailwind CSS
 
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
