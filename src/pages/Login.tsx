@@ -28,7 +28,9 @@ export default function Login() {
         description: "You have successfully logged in.",
       });
       
-      // Navigate based on role
+      // Navigate based on selected role
+      // Note: In a real application, the role would be validated against
+      // the user's actual role stored in the backend/database
       if (role === "hospital") {
         navigate("/hospital-dashboard");
       } else if (role === "admin") {

@@ -222,9 +222,9 @@ export default function Home() {
                   <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br from-accent/20 to-health/20 mb-4 group-hover:scale-110 transition-transform">
                     <FileText className="w-7 h-7 text-accent" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">📄 Reports / History</h3>
+                  <h3 className="text-xl font-semibold mb-2">📄 Past Predictions</h3>
                   <p className="text-muted-foreground text-sm">
-                    Access past predictions and detailed reports
+                    View your prediction history and health assessments
                   </p>
                 </Card>
               </Link>
