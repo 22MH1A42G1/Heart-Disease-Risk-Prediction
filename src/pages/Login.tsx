@@ -5,12 +5,14 @@ import { GlowingButton } from "@/components/GlowingButton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
-import { Heart, Lock, User, Loader2, ArrowRight } from "lucide-react";
+import { Heart, Lock, User, Loader2, ArrowRight, Building2, Settings } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Card } from "@/components/ui/card";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState<"patient" | "hospital" | "admin">("patient");
   const { login, isLoading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -25,7 +27,20 @@ export default function Login() {
         title: "Welcome back!",
         description: "You have successfully logged in.",
       });
-      navigate("/predict");
+      
+      // Navigate based on selected role
+      // TODO: In production, implement proper role-based access control (RBAC)
+      // - Validate selected role against user's actual role from backend
+      // - Store role in user context/session
+      // - Implement middleware to protect dashboard routes
+      // Current implementation is for demonstration purposes only
+      if (role === "hospital") {
+        navigate("/hospital-dashboard");
+      } else if (role === "admin") {
+        navigate("/admin-dashboard");
+      } else {
+        navigate("/predict");
+      }
     } else {
       toast({
         title: "Login failed",
@@ -34,6 +49,27 @@ export default function Login() {
       });
     }
   };
+
+  const roles = [
+    {
+      id: "patient" as const,
+      icon: User,
+      label: "Patient",
+      description: "Access predictions and health reports",
+    },
+    {
+      id: "hospital" as const,
+      icon: Building2,
+      label: "Hospital",
+      description: "Manage local training and data",
+    },
+    {
+      id: "admin" as const,
+      icon: Settings,
+      label: "Admin",
+      description: "System administration and oversight",
+    },
+  ];
 
   return (
     <BlurBackground variant="gradient">
@@ -52,6 +88,40 @@ export default function Login() {
 
           {/* Login Form */}
           <div className="glass-card rounded-3xl p-8 animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
+            {/* Role Selector */}
+            <div className="mb-6">
+              <Label className="mb-3 block">Select Role</Label>
+              <div className="grid grid-cols-3 gap-3">
+                {roles.map((roleOption) => (
+                  <Card
+                    key={roleOption.id}
+                    className={`cursor-pointer p-4 text-center transition-all hover:scale-105 ${
+                      role === roleOption.id
+                        ? "bg-primary/10 border-2 border-primary"
+                        : "glass-card hover:bg-muted/50"
+                    }`}
+                    onClick={() => setRole(roleOption.id)}
+                  >
+                    <roleOption.icon
+                      className={`w-6 h-6 mx-auto mb-2 ${
+                        role === roleOption.id ? "text-primary" : "text-muted-foreground"
+                      }`}
+                    />
+                    <p
+                      className={`text-sm font-medium ${
+                        role === roleOption.id ? "text-primary" : ""
+                      }`}
+                    >
+                      {roleOption.label}
+                    </p>
+                  </Card>
+                ))}
+              </div>
+              <p className="text-xs text-muted-foreground mt-2 text-center">
+                {roles.find((r) => r.id === role)?.description}
+              </p>
+            </div>
+
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
                 <Label htmlFor="username">Username</Label>
