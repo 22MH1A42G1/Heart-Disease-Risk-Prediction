@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
 import { Heart, Activity, Loader2, AlertTriangle, CheckCircle, Info, BarChart3 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate } from "react-router-dom";
@@ -23,6 +24,7 @@ interface PredictionResult {
 export default function Prediction() {
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
   const [result, setResult] = useState<PredictionResult | null>(null);
 
   const [formData, setFormData] = useState({
@@ -50,9 +52,21 @@ export default function Prediction() {
   const handlePredict = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setProgress(0);
 
-    // Simulate ML prediction
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    // Simulate progress with AI Analysis stages
+    const progressSteps = [
+      { value: 20, delay: 300 },
+      { value: 40, delay: 400 },
+      { value: 60, delay: 500 },
+      { value: 80, delay: 400 },
+      { value: 100, delay: 400 },
+    ];
+
+    for (const step of progressSteps) {
+      await new Promise((resolve) => setTimeout(resolve, step.delay));
+      setProgress(step.value);
+    }
 
     // Generate mock prediction based on some inputs
     const age = parseInt(formData.age) || 50;
@@ -135,6 +149,7 @@ export default function Prediction() {
     });
 
     setIsLoading(false);
+    setProgress(0);
   };
 
   const formFields = [
@@ -280,6 +295,26 @@ export default function Prediction() {
                         </>
                       )}
                     </GlowingButton>
+
+                    {/* Progress Bar */}
+                    {isLoading && (
+                      <div className="mt-4 space-y-2 animate-fade-in">
+                        <div className="flex justify-between text-sm">
+                          <span className="text-muted-foreground">AI Analysis Progress</span>
+                          <span className="font-semibold text-primary">{progress}%</span>
+                        </div>
+                        <Progress value={progress} className="h-2" />
+                        <p className="text-xs text-muted-foreground text-center">
+                          {progress < 40
+                            ? "Preprocessing health data..."
+                            : progress < 70
+                            ? "Running federated model inference..."
+                            : progress < 90
+                            ? "Analyzing risk factors..."
+                            : "Generating recommendations..."}
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </form>
               </Card>
@@ -366,16 +401,19 @@ export default function Prediction() {
                       <div className="space-y-3">
                         <h4 className="font-semibold flex items-center gap-2">
                           <BarChart3 className="w-4 h-4 text-primary" />
-                          Explainable AI - Feature Importance
+                          Top 3 Risk Factors
                         </h4>
                         <p className="text-xs text-muted-foreground mb-3">
-                          📌 Big advantage in viva → transparency & trust
+                          Explainable AI shows which factors contribute most to your risk score
                         </p>
                         <div className="space-y-3">
-                          {result.featureImportance.map((item) => (
+                          {result.featureImportance.slice(0, 3).map((item, index) => (
                             <div key={item.feature} className="space-y-1">
                               <div className="flex justify-between text-sm">
-                                <span>{item.feature}</span>
+                                <span className="flex items-center gap-2">
+                                  <span className="text-lg">{index === 0 ? "🥇" : index === 1 ? "🥈" : "🥉"}</span>
+                                  {item.feature}
+                                </span>
                                 <span className="font-semibold">
                                   {item.importance.toFixed(0)}%
                                 </span>
