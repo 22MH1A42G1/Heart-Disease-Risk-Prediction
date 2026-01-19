@@ -29,8 +29,11 @@ export default function Login() {
       });
       
       // Navigate based on selected role
-      // Note: In a real application, the role would be validated against
-      // the user's actual role stored in the backend/database
+      // TODO: In production, implement proper role-based access control (RBAC)
+      // - Validate selected role against user's actual role from backend
+      // - Store role in user context/session
+      // - Implement middleware to protect dashboard routes
+      // Current implementation is for demonstration purposes only
       if (role === "hospital") {
         navigate("/hospital-dashboard");
       } else if (role === "admin") {

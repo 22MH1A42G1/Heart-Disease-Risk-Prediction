@@ -55,15 +55,16 @@ export default function Prediction() {
     setProgress(0);
 
     // Simulate progress with AI Analysis stages
-    const progressSteps = [
-      { value: 20, delay: 300 },
-      { value: 40, delay: 400 },
-      { value: 60, delay: 500 },
-      { value: 80, delay: 400 },
-      { value: 100, delay: 400 },
+    // Progress delays are configured to provide smooth user feedback
+    const PROGRESS_STEPS = [
+      { value: 20, delay: 300 },  // Initial data validation
+      { value: 40, delay: 400 },  // Preprocessing
+      { value: 60, delay: 500 },  // Model inference
+      { value: 80, delay: 400 },  // Risk analysis
+      { value: 100, delay: 400 }, // Generating recommendations
     ];
 
-    for (const step of progressSteps) {
+    for (const step of PROGRESS_STEPS) {
       await new Promise((resolve) => setTimeout(resolve, step.delay));
       setProgress(step.value);
     }
