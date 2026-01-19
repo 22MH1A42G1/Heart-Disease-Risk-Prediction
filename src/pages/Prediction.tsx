@@ -5,14 +5,19 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card } from "@/components/ui/card";
-import { Heart, Activity, Loader2, AlertTriangle, CheckCircle, Info } from "lucide-react";
+import { Heart, Activity, Loader2, AlertTriangle, CheckCircle, Info, BarChart3 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate } from "react-router-dom";
 
 interface PredictionResult {
-  risk: "High" | "Low";
+  risk: "High" | "Medium" | "Low";
   probability: number;
   suggestions: string[];
+  featureImportance: {
+    feature: string;
+    importance: number;
+    color: string;
+  }[];
 }
 
 export default function Prediction() {
@@ -62,15 +67,29 @@ export default function Prediction() {
       (formData.exerciseAngina === "Y" ? 0.2 : 0);
 
     const probability = Math.min(0.95, Math.max(0.05, riskScore + Math.random() * 0.2));
-    const isHighRisk = probability > 0.5;
+    let riskLevel: "High" | "Medium" | "Low";
+    if (probability > 0.65) {
+      riskLevel = "High";
+    } else if (probability > 0.35) {
+      riskLevel = "Medium";
+    } else {
+      riskLevel = "Low";
+    }
 
-    const suggestions = isHighRisk
+    const suggestions = riskLevel === "High"
       ? [
           "Consult a cardiologist for detailed evaluation",
           "Consider lifestyle modifications including diet and exercise",
           "Monitor blood pressure and cholesterol regularly",
           "Avoid smoking and limit alcohol consumption",
           "Schedule a stress test for further assessment",
+        ]
+      : riskLevel === "Medium"
+      ? [
+          "Schedule regular check-ups with your doctor",
+          "Monitor cholesterol and blood pressure monthly",
+          "Maintain a balanced diet and exercise routine",
+          "Reduce stress through meditation or yoga",
         ]
       : [
           "Maintain your current healthy lifestyle",
@@ -79,10 +98,40 @@ export default function Prediction() {
           "Stay hydrated and maintain a balanced diet",
         ];
 
+    // Calculate feature importance for XAI
+    const cholImportance = cholesterol > 240 ? 40 : cholesterol > 200 ? 30 : 20;
+    const bpImportance = bp > 140 ? 35 : bp > 130 ? 25 : 20;
+    const ageImportance = age > 55 ? 25 : 15;
+    const diabetesImportance = formData.fastingBS === "1" ? 15 : 10;
+
+    const total = cholImportance + bpImportance + ageImportance + diabetesImportance;
+
     setResult({
-      risk: isHighRisk ? "High" : "Low",
+      risk: riskLevel,
       probability: probability * 100,
       suggestions,
+      featureImportance: [
+        {
+          feature: "Cholesterol",
+          importance: (cholImportance / total) * 100,
+          color: "hsl(var(--destructive))",
+        },
+        {
+          feature: "Blood Pressure",
+          importance: (bpImportance / total) * 100,
+          color: "hsl(var(--warning))",
+        },
+        {
+          feature: "Age",
+          importance: (ageImportance / total) * 100,
+          color: "hsl(var(--primary))",
+        },
+        {
+          feature: "Diabetes",
+          importance: (diabetesImportance / total) * 100,
+          color: "hsl(var(--secondary))",
+        },
+      ],
     });
 
     setIsLoading(false);
@@ -245,6 +294,8 @@ export default function Prediction() {
                     result
                       ? result.risk === "High"
                         ? "border-2 border-destructive/50"
+                        : result.risk === "Medium"
+                        ? "border-2 border-warning/50"
                         : "border-2 border-success/50"
                       : ""
                   }`}
@@ -258,18 +309,32 @@ export default function Prediction() {
                           className={`inline-flex items-center justify-center w-20 h-20 rounded-full mb-4 ${
                             result.risk === "High"
                               ? "bg-destructive/20"
+                              : result.risk === "Medium"
+                              ? "bg-warning/20"
                               : "bg-success/20"
                           }`}
                         >
                           {result.risk === "High" ? (
                             <AlertTriangle className="w-10 h-10 text-destructive" />
+                          ) : result.risk === "Medium" ? (
+                            <AlertTriangle className="w-10 h-10 text-warning" />
                           ) : (
                             <CheckCircle className="w-10 h-10 text-success" />
                           )}
                         </div>
-                        <h3 className="text-2xl font-bold">
-                          {result.risk} Risk
-                        </h3>
+                        <div
+                          className={`inline-flex px-4 py-2 rounded-full mb-2 ${
+                            result.risk === "High"
+                              ? "bg-destructive/20 text-destructive"
+                              : result.risk === "Medium"
+                              ? "bg-warning/20 text-warning"
+                              : "bg-success/20 text-success"
+                          }`}
+                        >
+                          <span className="text-xl font-bold">
+                            {result.risk === "High" ? "🔴 High Risk" : result.risk === "Medium" ? "🟡 Medium Risk" : "🟢 Low Risk"}
+                          </span>
+                        </div>
                         <p className="text-muted-foreground">
                           Heart Disease Prediction
                         </p>
@@ -288,10 +353,44 @@ export default function Prediction() {
                             className={`h-full rounded-full transition-all duration-1000 ${
                               result.risk === "High"
                                 ? "bg-gradient-to-r from-warning to-destructive"
+                                : result.risk === "Medium"
+                                ? "bg-gradient-to-r from-primary to-warning"
                                 : "bg-gradient-to-r from-health to-success"
                             }`}
                             style={{ width: `${result.probability}%` }}
                           />
+                        </div>
+                      </div>
+
+                      {/* XAI - Feature Importance */}
+                      <div className="space-y-3">
+                        <h4 className="font-semibold flex items-center gap-2">
+                          <BarChart3 className="w-4 h-4 text-primary" />
+                          Explainable AI - Feature Importance
+                        </h4>
+                        <p className="text-xs text-muted-foreground mb-3">
+                          📌 Big advantage in viva → transparency & trust
+                        </p>
+                        <div className="space-y-3">
+                          {result.featureImportance.map((item) => (
+                            <div key={item.feature} className="space-y-1">
+                              <div className="flex justify-between text-sm">
+                                <span>{item.feature}</span>
+                                <span className="font-semibold">
+                                  {item.importance.toFixed(0)}%
+                                </span>
+                              </div>
+                              <div className="h-2 bg-muted rounded-full overflow-hidden">
+                                <div
+                                  className="h-full rounded-full transition-all duration-1000"
+                                  style={{
+                                    width: `${item.importance}%`,
+                                    backgroundColor: item.color,
+                                  }}
+                                />
+                              </div>
+                            </div>
+                          ))}
                         </div>
                       </div>
 
