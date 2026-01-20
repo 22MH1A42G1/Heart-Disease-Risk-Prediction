@@ -31,8 +31,8 @@ interface FormField {
 }
 
 const MODEL_TYPE_LABELS = {
-  hospital: "📍 Prediction based on Hospital Local Model",
-  admin: "🌐 Prediction based on Aggregated Global Model",
+  local: "📍 Prediction based on Hospital Local Model",
+  global: "🌐 Prediction based on Global Federated Model",
 } as const;
 
 export default function Prediction() {
@@ -511,9 +511,7 @@ export default function Prediction() {
                       </p>
                       <div className="p-3 rounded-lg bg-primary/10 border border-primary/20">
                         <p className="text-xs font-medium text-primary">
-                          {user?.role === "hospital" 
-                            ? MODEL_TYPE_LABELS.hospital
-                            : MODEL_TYPE_LABELS.admin}
+                          {MODEL_TYPE_LABELS.local}
                         </p>
                       </div>
                     </div>

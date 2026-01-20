@@ -1,32 +1,14 @@
 import { BlurBackground } from "@/components/BlurBackground";
 import { GlowingButton } from "@/components/GlowingButton";
 import { Link } from "react-router-dom";
-import { Activity, Shield, Brain, Database, ArrowRight, Users, Lock, BarChart3, FileText, Settings, Building2, Github, Mail, Info, Stethoscope } from "lucide-react";
+import { Activity, Shield, Brain, Database, ArrowRight, Users, Lock, BarChart3, FileText, Building2, Github, Mail, Info, Stethoscope } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { useAuth, DEFAULT_USER_ROLE, type UserRole } from "@/contexts/AuthContext";
-
-const dashboardPaths = {
-  hospital: "/hospital-dashboard",
-  admin: "/admin-dashboard",
-} as const;
-
-const ctaLabels = {
-  hospital: "Cardiovascular Risk Assessment",
-  admin: "System Administration",
-} as const;
-
-const dashboardLabels = {
-  hospital: "Access Hospital Dashboard",
-  admin: "Access Admin Dashboard",
-} as const;
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Home() {
   const { user } = useAuth();
-  const resolvedRole: UserRole = user?.role ?? DEFAULT_USER_ROLE;
   const isAuthenticated = Boolean(user);
-  const ctaPath = isAuthenticated ? dashboardPaths[resolvedRole] : "/login";
-  const primaryCtaLabel = ctaLabels[resolvedRole];
-  const dashboardCtaLabel = dashboardLabels[resolvedRole];
+  const ctaPath = isAuthenticated ? "/hospital-dashboard" : "/login";
 
   const features = [
     {
@@ -84,7 +66,7 @@ export default function Home() {
             >
               <Link to={ctaPath}>
                 <GlowingButton size="lg" className="text-lg px-8">
-                  {primaryCtaLabel}
+                  Cardiovascular Risk Assessment
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </GlowingButton>
               </Link>
@@ -214,18 +196,6 @@ export default function Home() {
                   <h3 className="text-xl font-semibold mb-2">Hospital Dashboard</h3>
                   <p className="text-muted-foreground text-sm">
                     Local training, patient data entry, and model performance
-                  </p>
-                </Card>
-              </Link>
-
-              <Link to="/admin-dashboard">
-                <Card className="glass-card rounded-2xl p-6 hover:scale-[1.02] transition-all duration-300 group cursor-pointer">
-                  <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br from-warning/20 to-destructive/20 mb-4 group-hover:scale-110 transition-transform">
-                    <Settings className="w-7 h-7 text-warning" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2">Admin Panel</h3>
-                  <p className="text-muted-foreground text-sm">
-                    Oversee global model and system administration
                   </p>
                 </Card>
               </Link>
@@ -413,7 +383,7 @@ export default function Home() {
             </p>
             <Link to={ctaPath}>
               <GlowingButton size="lg" glowColor="heart" className="text-lg px-10">
-                {dashboardCtaLabel}
+                Access Hospital Dashboard
                 <ArrowRight className="w-5 h-5 ml-2" />
               </GlowingButton>
             </Link>
@@ -431,7 +401,7 @@ export default function Home() {
                   <span className="font-semibold text-lg">HeartFL</span>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Privacy-preserving heart disease risk prediction using federated learning.
+                  This system implements a hospital-centric federated learning architecture where global model aggregation occurs without centralized access to patient data.
                 </p>
               </div>
 
@@ -499,7 +469,7 @@ export default function Home() {
             <div className="pt-8 border-t border-border/50">
               <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                 <p className="text-sm text-muted-foreground">
-                  © 2026 HeartFL - Heart Disease Risk Prediction. Privacy-preserving ML for healthcare.
+                  © 2026 HeartFL - Heart Disease Risk Prediction. Hospital-driven federated learning with no centralized admin authority.
                 </p>
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
                   <Shield className="w-4 h-4 text-success" />

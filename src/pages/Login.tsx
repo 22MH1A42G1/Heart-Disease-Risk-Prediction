@@ -5,14 +5,12 @@ import { GlowingButton } from "@/components/GlowingButton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
-import { Activity, Lock, User, Loader2, ArrowRight, Building2, Settings } from "lucide-react";
+import { Activity, Lock, User, Loader2, ArrowRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { Card } from "@/components/ui/card";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState<"hospital" | "admin">("hospital");
   const { login, isLoading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -20,7 +18,7 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const success = await login(username, password, role);
+    const success = await login(username, password);
 
     if (success) {
       toast({
@@ -28,34 +26,15 @@ export default function Login() {
         description: "You have successfully logged in.",
       });
       
-      if (role === "hospital") {
-        navigate("/hospital-dashboard");
-      } else {
-        navigate("/admin-dashboard");
-      }
+      navigate("/hospital-dashboard");
     } else {
       toast({
         title: "Login failed",
-        description: "Invalid credentials or role selection.",
+        description: "Invalid credentials. Please try again.",
         variant: "destructive",
       });
     }
   };
-
-  const roles = [
-    {
-      id: "hospital" as const,
-      icon: Building2,
-      label: "Hospital",
-      description: "Manage local training and patient data entry",
-    },
-    {
-      id: "admin" as const,
-      icon: Settings,
-      label: "Admin",
-      description: "System administration and oversight",
-    },
-  ];
 
   return (
     <BlurBackground variant="gradient">
@@ -68,46 +47,12 @@ export default function Login() {
             </div>
             <h1 className="text-3xl font-bold">Welcome Back</h1>
             <p className="text-muted-foreground mt-2">
-              Login to access HeartFL system
+              Login to access HeartFL Hospital System
             </p>
           </div>
 
           {/* Login Form */}
           <div className="glass-card rounded-3xl p-8 animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
-            {/* Role Selector */}
-            <div className="mb-6">
-              <Label className="mb-3 block">Select Access Role</Label>
-              <div className="grid grid-cols-2 gap-3">
-                {roles.map((roleOption) => (
-                  <Card
-                    key={roleOption.id}
-                    className={`cursor-pointer p-4 text-center transition-all hover:scale-105 ${
-                      role === roleOption.id
-                        ? "bg-primary/10 border-2 border-primary"
-                        : "glass-card hover:bg-muted/50"
-                    }`}
-                    onClick={() => setRole(roleOption.id)}
-                  >
-                    <roleOption.icon
-                      className={`w-6 h-6 mx-auto mb-2 ${
-                        role === roleOption.id ? "text-primary" : "text-muted-foreground"
-                      }`}
-                    />
-                    <p
-                      className={`text-sm font-medium ${
-                        role === roleOption.id ? "text-primary" : ""
-                      }`}
-                    >
-                      {roleOption.label}
-                    </p>
-                  </Card>
-                ))}
-              </div>
-              <p className="text-xs text-muted-foreground mt-2 text-center">
-                {roles.find((r) => r.id === role)?.description}
-              </p>
-            </div>
-
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
                 <Label htmlFor="username">Username</Label>
