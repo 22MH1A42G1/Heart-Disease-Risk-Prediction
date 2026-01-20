@@ -36,7 +36,7 @@ export default function Login() {
     } else {
       toast({
         title: "Login failed",
-        description: "Invalid username or password.",
+        description: "Invalid credentials or role selection.",
         variant: "destructive",
       });
     }

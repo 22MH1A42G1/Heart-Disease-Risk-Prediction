@@ -62,11 +62,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     );
 
     if (foundUser) {
+      const resolvedRole = foundUser.role ?? "hospital";
+      if (resolvedRole !== role) {
+        setIsLoading(false);
+        return false;
+      }
       const loggedInUser = {
         id: foundUser.id,
         username: foundUser.username,
         email: foundUser.email,
-        role,
+        role: resolvedRole,
       };
       setUser(loggedInUser);
       localStorage.setItem("heartfl-user", JSON.stringify(loggedInUser));

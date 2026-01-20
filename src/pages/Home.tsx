@@ -5,12 +5,29 @@ import { Activity, Shield, Brain, Database, ArrowRight, Users, Lock, BarChart3, 
 import { Card } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 
+const dashboardPaths = {
+  hospital: "/hospital-dashboard",
+  admin: "/admin-dashboard",
+} as const;
+
+const ctaLabels = {
+  hospital: "Cardiovascular Risk Assessment",
+  admin: "System Administration",
+} as const;
+
+const dashboardLabels = {
+  hospital: "Access Hospital Dashboard",
+  admin: "Access Admin Dashboard",
+} as const;
+
 export default function Home() {
   const { user } = useAuth();
-  const dashboardPath = user ? (user.role === "admin" ? "/admin-dashboard" : "/hospital-dashboard") : "/login";
-  const primaryCtaPath = user?.role === "admin" ? "/admin-dashboard" : "/hospital-dashboard";
-  const primaryCtaLabel = user?.role === "admin" ? "System Administration" : "Cardiovascular Risk Assessment";
-  const dashboardCtaLabel = user?.role === "admin" ? "Access Admin Dashboard" : "Access Hospital Dashboard";
+  const resolvedRole = user?.role ?? "hospital";
+  const isAuthenticated = Boolean(user);
+  const dashboardPath = isAuthenticated ? dashboardPaths[resolvedRole] : "/login";
+  const primaryCtaPath = isAuthenticated ? dashboardPaths[resolvedRole] : "/login";
+  const primaryCtaLabel = ctaLabels[resolvedRole];
+  const dashboardCtaLabel = dashboardLabels[resolvedRole];
 
   const features = [
     {
