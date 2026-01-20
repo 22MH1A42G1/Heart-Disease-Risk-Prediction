@@ -2,20 +2,9 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useTheme } from "./ThemeProvider";
 import { Button } from "@/components/ui/button";
-import { Activity, Moon, Sun, Menu, X, LogOut, User } from "lucide-react";
+import { Activity, Moon, Sun, Menu, X, LogOut } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-
-const navLinksByRole = {
-  hospital: [
-    { name: "Prediction", path: "/predict" },
-    { name: "Hospital Dashboard", path: "/hospital-dashboard" },
-  ],
-  admin: [
-    { name: "Admin Dashboard", path: "/admin-dashboard" },
-    { name: "FL Dashboard", path: "/fl-dashboard" },
-  ],
-} as const;
 
 export function Navbar() {
   const { theme, setTheme } = useTheme();
@@ -27,7 +16,10 @@ export function Navbar() {
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
-    ...(user ? navLinksByRole[user.role] ?? [] : []),
+    ...(user ? [
+      { name: "Prediction", path: "/predict" },
+      { name: "Hospital Dashboard", path: "/hospital-dashboard" },
+    ] : []),
   ];
 
   const handleLogout = () => {
@@ -88,11 +80,7 @@ export function Navbar() {
               {user ? (
                 <>
                   <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted">
-                    <User className="w-4 h-4" />
                     <span className="text-sm font-medium">{user.username}</span>
-                    <span className="text-xs text-muted-foreground capitalize">
-                      {user.role}
-                    </span>
                   </div>
                   <Button variant="ghost" size="sm" onClick={handleLogout}>
                     <LogOut className="w-4 h-4 mr-2" />
@@ -151,11 +139,7 @@ export function Navbar() {
               {user ? (
                 <>
                   <div className="flex items-center gap-2 px-4 py-2">
-                    <User className="w-4 h-4" />
                     <span className="text-sm font-medium">{user.username}</span>
-                    <span className="text-xs text-muted-foreground capitalize">
-                      {user.role}
-                    </span>
                   </div>
                   <button
                     onClick={handleLogout}

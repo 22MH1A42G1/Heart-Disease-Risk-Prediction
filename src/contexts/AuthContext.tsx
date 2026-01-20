@@ -1,13 +1,9 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
-
-export type UserRole = "hospital" | "admin";
-export const DEFAULT_USER_ROLE: UserRole = "hospital";
+import { createContext, useContext, useState, ReactNode } from "react";
 
 interface User {
   id: string;
   username: string;
   email: string;
-  role: UserRole;
 }
 
 interface StoredUser {
@@ -15,12 +11,11 @@ interface StoredUser {
   username: string;
   email: string;
   password: string;
-  role?: UserRole;
 }
 
 interface AuthContextType {
   user: User | null;
-  login: (username: string, password: string, role: UserRole) => Promise<boolean>;
+  login: (username: string, password: string) => Promise<boolean>;
   register: (username: string, email: string, password: string) => Promise<boolean>;
   logout: () => void;
   isLoading: boolean;
@@ -42,33 +37,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       id: parsed.id,
       username: parsed.username,
       email: parsed.email ?? "",
-      role: parsed.role ?? DEFAULT_USER_ROLE,
     };
   });
   const [isLoading, setIsLoading] = useState(false);
 
-  // Initialize admin account on component mount
-  useEffect(() => {
-    const users = JSON.parse(localStorage.getItem("heartfl-users") || "[]") as StoredUser[];
-    const adminExists = users.some((u) => u.username === "admin" && u.role === "admin");
-    
-    if (!adminExists) {
-      const adminUser: StoredUser = {
-        id: "admin-account",
-        username: "admin",
-        email: "admin@heartfl.system",
-        password: "admin@123",
-        role: "admin",
-      };
-      users.push(adminUser);
-      localStorage.setItem("heartfl-users", JSON.stringify(users));
-    }
-  }, []);
-
   const login = async (
     username: string,
-    password: string,
-    role: UserRole
+    password: string
   ): Promise<boolean> => {
     setIsLoading(true);
     // Simulate API call
@@ -81,16 +56,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     );
 
     if (foundUser) {
-      const resolvedRole = foundUser.role ?? DEFAULT_USER_ROLE;
-      if (resolvedRole !== role) {
-        setIsLoading(false);
-        return false;
-      }
       const loggedInUser = {
         id: foundUser.id,
         username: foundUser.username,
         email: foundUser.email,
-        role: resolvedRole,
       };
       setUser(loggedInUser);
       localStorage.setItem("heartfl-user", JSON.stringify(loggedInUser));
@@ -119,13 +88,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return false;
     }
 
-    // Default role for self-registered users is hospital
+    // Register new hospital user
     const newUser: StoredUser = {
       id: crypto.randomUUID(),
       username,
       email,
       password,
-      role: DEFAULT_USER_ROLE,
     };
 
     users.push(newUser);
