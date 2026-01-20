@@ -21,6 +21,15 @@ interface PredictionResult {
   }[];
 }
 
+interface FormField {
+  id: string;
+  label: string;
+  type: "number" | "select";
+  placeholder?: string;
+  step?: string;
+  options?: { value: string; label: string }[];
+}
+
 export default function Prediction() {
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
@@ -164,7 +173,7 @@ export default function Prediction() {
     setProgress(0);
   };
 
-  const formFields = [
+  const formFields: FormField[] = [
     { id: "age", label: "Age (years) *", type: "number", placeholder: "" },
     {
       id: "sex",
@@ -283,7 +292,7 @@ export default function Prediction() {
                             onChange={(e) => handleInputChange(field.id, e.target.value)}
                             className="h-12 bg-background/50"
                             required
-                            step={(field as any).step}
+                            step={field.step}
                           />
                         )}
                       </div>
