@@ -455,16 +455,6 @@ export default function Home() {
                       GitHub Repository
                     </a>
                   </li>
-                  <li>
-                    <a 
-                      href="https://archive.ics.uci.edu/ml/datasets/heart+disease" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="hover:text-primary transition-colors"
-                    >
-                      Dataset Source
-                    </a>
-                  </li>
                 </ul>
               </div>
 
