@@ -5,7 +5,7 @@ import { GlowingButton } from "@/components/GlowingButton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
-import { Heart, Mail, Lock, User, Loader2, ArrowRight } from "lucide-react";
+import { Activity, Mail, Lock, User, Loader2, ArrowRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 export default function Register() {
@@ -62,7 +62,7 @@ export default function Register() {
           {/* Logo */}
           <div className="text-center mb-8 animate-fade-in">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-secondary/20 to-primary/20 mb-4">
-              <Heart className="w-8 h-8 text-secondary animate-heart-beat" />
+              <Activity className="w-8 h-8 text-secondary" />
             </div>
             <h1 className="text-3xl font-bold">Create Account</h1>
             <p className="text-muted-foreground mt-2">
@@ -171,7 +171,7 @@ export default function Register() {
 
           {/* Security note */}
           <p className="text-center text-sm text-muted-foreground mt-6 animate-fade-in" style={{ animationDelay: "0.2s" }}>
-            🔒 Your data is secured with end-to-end encryption
+            Your data is secured with end-to-end encryption
           </p>
         </div>
       </div>

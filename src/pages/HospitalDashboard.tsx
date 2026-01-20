@@ -60,6 +60,7 @@ export default function HospitalDashboard() {
 
   const sidebarItems = [
     { id: "dashboard", icon: Home, label: "Dashboard" },
+    { id: "patient-entry", icon: Activity, label: "Patient Data Entry" },
     { id: "upload", icon: FileUp, label: "Upload Dataset" },
     { id: "training", icon: PlayCircle, label: "Local Training" },
     { id: "status", icon: Activity, label: "Model Status" },
@@ -114,11 +115,168 @@ export default function HospitalDashboard() {
                   <div>
                     <h3 className="font-semibold text-lg">Privacy Protected</h3>
                     <p className="text-sm text-muted-foreground">
-                      ✅ Patient data never leaves hospital - Only model gradients are shared
+                      Patient data never leaves hospital - Only model gradients are shared
                     </p>
                   </div>
                 </div>
               </Card>
+
+              {/* Patient Data Entry Section */}
+              {activeTab === "patient-entry" && (
+                <Card className="glass-card rounded-3xl p-8 animate-fade-in-up">
+                  <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
+                    <Activity className="w-5 h-5 text-primary" />
+                    Patient Data Entry
+                  </h2>
+                  
+                  <p className="text-sm text-muted-foreground mb-6">
+                    Enter patient health parameters for cardiovascular risk assessment. All data remains local and secure.
+                  </p>
+
+                  <form className="space-y-6">
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <Label htmlFor="patientAge">Age</Label>
+                        <Input
+                          id="patientAge"
+                          type="number"
+                          placeholder="45"
+                          className="h-12 bg-background/50"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="patientGender">Gender</Label>
+                        <Select>
+                          <SelectTrigger className="h-12 bg-background/50">
+                            <SelectValue placeholder="Select gender" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="M">Male</SelectItem>
+                            <SelectItem value="F">Female</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="bloodPressure">Blood Pressure (mm Hg)</Label>
+                        <Input
+                          id="bloodPressure"
+                          type="number"
+                          placeholder="120"
+                          className="h-12 bg-background/50"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="cholesterol">Cholesterol (mg/dL)</Label>
+                        <Input
+                          id="cholesterol"
+                          type="number"
+                          placeholder="200"
+                          className="h-12 bg-background/50"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="diabetes">Diabetes Status</Label>
+                        <Select>
+                          <SelectTrigger className="h-12 bg-background/50">
+                            <SelectValue placeholder="Select status" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="0">No</SelectItem>
+                            <SelectItem value="1">Yes</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="smoking">Smoking Status</Label>
+                        <Select>
+                          <SelectTrigger className="h-12 bg-background/50">
+                            <SelectValue placeholder="Select status" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="never">Never</SelectItem>
+                            <SelectItem value="former">Former</SelectItem>
+                            <SelectItem value="current">Current</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="bmi">BMI (Body Mass Index)</Label>
+                        <Input
+                          id="bmi"
+                          type="number"
+                          step="0.1"
+                          placeholder="25.0"
+                          className="h-12 bg-background/50"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="maxHR">Maximum Heart Rate</Label>
+                        <Input
+                          id="maxHR"
+                          type="number"
+                          placeholder="150"
+                          className="h-12 bg-background/50"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="exerciseAngina">Exercise-Induced Angina</Label>
+                        <Select>
+                          <SelectTrigger className="h-12 bg-background/50">
+                            <SelectValue placeholder="Select" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="N">No</SelectItem>
+                            <SelectItem value="Y">Yes</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="chestPainType">Chest Pain Type</Label>
+                        <Select>
+                          <SelectTrigger className="h-12 bg-background/50">
+                            <SelectValue placeholder="Select type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="ATA">Atypical Angina</SelectItem>
+                            <SelectItem value="NAP">Non-Anginal Pain</SelectItem>
+                            <SelectItem value="ASY">Asymptomatic</SelectItem>
+                            <SelectItem value="TA">Typical Angina</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+
+                    <div className="pt-4">
+                      <GlowingButton
+                        type="button"
+                        className="w-full h-14 text-lg"
+                        glowColor="primary"
+                      >
+                        <Activity className="w-5 h-5 mr-2" />
+                        Assess Cardiovascular Risk
+                      </GlowingButton>
+                    </div>
+
+                    <div className="p-4 rounded-xl bg-primary/10 border border-primary/20">
+                      <p className="text-sm flex items-center gap-2">
+                        <Shield className="w-4 h-4 text-primary" />
+                        <span>
+                          <strong>Privacy Notice:</strong> This system follows privacy-preserving federated learning. Patient data never leaves the hospital.
+                        </span>
+                      </p>
+                    </div>
+                  </form>
+                </Card>
+              )}
 
               {/* Dataset Upload Section */}
               {activeTab === "upload" && (

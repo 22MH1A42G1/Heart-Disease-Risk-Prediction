@@ -1,7 +1,7 @@
 import { BlurBackground } from "@/components/BlurBackground";
 import { GlowingButton } from "@/components/GlowingButton";
 import { Link } from "react-router-dom";
-import { Heart, Shield, Brain, Database, ArrowRight, Activity, Users, Lock, BarChart3, FileText, Settings, Building2, Github, Mail, Info } from "lucide-react";
+import { Activity, Shield, Brain, Database, ArrowRight, Users, Lock, BarChart3, FileText, Settings, Building2, Github, Mail, Info, Stethoscope } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
 export default function Home() {
@@ -36,8 +36,8 @@ export default function Home() {
         <section className="container mx-auto px-4 py-20 md:py-32">
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/10 text-secondary mb-6 animate-fade-in">
-              <Heart className="w-4 h-4 animate-heart-beat" />
-              <span className="text-sm font-medium">🩺 PROD LEVEL UI DESIGN</span>
+              <Stethoscope className="w-4 h-4" />
+              <span className="text-sm font-medium">Production-Level Medical Platform</span>
             </div>
 
             <h1
@@ -59,9 +59,9 @@ export default function Home() {
               className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in"
               style={{ animationDelay: "0.3s" }}
             >
-              <Link to="/predict">
+              <Link to="/hospital-dashboard">
                 <GlowingButton size="lg" className="text-lg px-8">
-                  Get Your Risk Assessment
+                  Cardiovascular Risk Assessment
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </GlowingButton>
               </Link>
@@ -114,27 +114,27 @@ export default function Home() {
                 {[
                   {
                     step: "01",
-                    title: "Register & Login",
+                    title: "Hospital Login",
                     description:
-                      "Create a secure account to access the prediction system. User authentication ensures data privacy.",
+                      "Secure authentication for authorized hospital staff to access the federated learning system.",
                   },
                   {
                     step: "02",
-                    title: "Enter Health Data",
+                    title: "Enter Patient Health Data",
                     description:
-                      "Input patient health parameters including age, blood pressure, cholesterol levels, and other vital indicators.",
+                      "Input patient health parameters including age, blood pressure, cholesterol levels, and clinical indicators.",
                   },
                   {
                     step: "03",
-                    title: "AI Analysis",
+                    title: "Federated AI Analysis",
                     description:
-                      "Our federated ML model analyzes the data using patterns learned from multiple healthcare institutions.",
+                      "The federated ML model analyzes data using knowledge learned collaboratively from multiple institutions.",
                   },
                   {
                     step: "04",
-                    title: "Get Results",
+                    title: "Risk Assessment Report",
                     description:
-                      "Receive instant risk assessment with probability scores and personalized health recommendations.",
+                      "Receive detailed cardiovascular risk assessment with probability scores and evidence-based recommendations.",
                   },
                 ].map((item, index) => (
                   <div
@@ -169,14 +169,14 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <Link to="/predict">
+              <Link to="/hospital-dashboard">
                 <Card className="glass-card rounded-2xl p-6 hover:scale-[1.02] transition-all duration-300 group cursor-pointer">
                   <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br from-health/20 to-secondary/20 mb-4 group-hover:scale-110 transition-transform">
-                    <Heart className="w-7 h-7 text-health" />
+                    <Activity className="w-7 h-7 text-health" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">🔮 Predict Heart Risk</h3>
+                  <h3 className="text-xl font-semibold mb-2">Cardiovascular Risk Assessment</h3>
                   <p className="text-muted-foreground text-sm">
-                    Get instant AI-powered heart disease risk assessment
+                    AI-powered heart disease risk prediction and analysis
                   </p>
                 </Card>
               </Link>
@@ -186,9 +186,9 @@ export default function Home() {
                   <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 mb-4 group-hover:scale-110 transition-transform">
                     <Building2 className="w-7 h-7 text-primary" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">🏥 Hospital Dashboard</h3>
+                  <h3 className="text-xl font-semibold mb-2">Hospital Dashboard</h3>
                   <p className="text-muted-foreground text-sm">
-                    Manage local training and monitor model performance
+                    Local training, patient data entry, and model performance
                   </p>
                 </Card>
               </Link>
@@ -198,7 +198,7 @@ export default function Home() {
                   <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br from-warning/20 to-destructive/20 mb-4 group-hover:scale-110 transition-transform">
                     <Settings className="w-7 h-7 text-warning" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">🛡️ Admin Panel</h3>
+                  <h3 className="text-xl font-semibold mb-2">Admin Panel</h3>
                   <p className="text-muted-foreground text-sm">
                     Oversee global model and system administration
                   </p>
@@ -210,7 +210,7 @@ export default function Home() {
                   <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br from-secondary/20 to-primary/20 mb-4 group-hover:scale-110 transition-transform">
                     <BarChart3 className="w-7 h-7 text-secondary" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">📊 Model Performance</h3>
+                  <h3 className="text-xl font-semibold mb-2">Model Performance</h3>
                   <p className="text-muted-foreground text-sm">
                     View federated learning metrics and accuracy
                   </p>
@@ -222,9 +222,9 @@ export default function Home() {
                   <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br from-accent/20 to-health/20 mb-4 group-hover:scale-110 transition-transform">
                     <FileText className="w-7 h-7 text-accent" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">📄 Past Predictions</h3>
+                  <h3 className="text-xl font-semibold mb-2">Clinical History</h3>
                   <p className="text-muted-foreground text-sm">
-                    View your prediction history and health assessments
+                    View assessment history and clinical reports
                   </p>
                 </Card>
               </Link>
@@ -234,7 +234,7 @@ export default function Home() {
                   <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20 mb-4 group-hover:scale-110 transition-transform">
                     <Info className="w-7 h-7 text-primary" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">ℹ️ About Project</h3>
+                  <h3 className="text-xl font-semibold mb-2">About Project</h3>
                   <p className="text-muted-foreground text-sm">
                     Learn about federated learning and our technology
                   </p>
@@ -309,7 +309,7 @@ export default function Home() {
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                🔐 Security & <span className="text-gradient">Compliance</span>
+                Security & <span className="text-gradient">Compliance</span>
               </h2>
               <p className="text-muted-foreground">
                 Industry-grade security for healthcare data
@@ -379,16 +379,16 @@ export default function Home() {
         {/* CTA Section */}
         <section className="container mx-auto px-4 py-20">
           <div className="max-w-3xl mx-auto text-center glass-card rounded-3xl p-12">
-            <Heart className="w-16 h-16 mx-auto mb-6 text-secondary animate-heart-beat" />
+            <Activity className="w-16 h-16 mx-auto mb-6 text-secondary" />
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Ready to Predict Your Heart Health?
+              Ready for Cardiovascular Risk Assessment?
             </h2>
             <p className="text-muted-foreground mb-8">
-              Trusted by healthcare-focused AI research for accurate heart disease risk assessment.
+              Trusted by healthcare professionals for accurate heart disease risk assessment using privacy-preserving federated learning.
             </p>
-            <Link to="/register">
+            <Link to="/login">
               <GlowingButton size="lg" glowColor="heart" className="text-lg px-10">
-                Get Your Risk Assessment
+                Access Hospital Dashboard
                 <ArrowRight className="w-5 h-5 ml-2" />
               </GlowingButton>
             </Link>
@@ -402,7 +402,7 @@ export default function Home() {
               {/* Brand */}
               <div>
                 <div className="flex items-center gap-2 mb-4">
-                  <Heart className="w-6 h-6 text-secondary" />
+                  <Activity className="w-6 h-6 text-secondary" />
                   <span className="font-semibold text-lg">HeartFL</span>
                 </div>
                 <p className="text-sm text-muted-foreground">

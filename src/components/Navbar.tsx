@@ -2,7 +2,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useTheme } from "./ThemeProvider";
 import { Button } from "@/components/ui/button";
-import { Heart, Moon, Sun, Menu, X, LogOut, User } from "lucide-react";
+import { Activity, Moon, Sun, Menu, X, LogOut, User } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -36,7 +36,7 @@ export function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
-            <Heart className="w-8 h-8 text-secondary animate-heart-beat" />
+            <Activity className="w-8 h-8 text-secondary" />
             <span className="font-bold text-lg hidden sm:block">
               Heart<span className="text-primary">FL</span>
             </span>
