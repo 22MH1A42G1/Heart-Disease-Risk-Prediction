@@ -249,11 +249,6 @@ export default function AdminDashboard() {
                   </div>
                 </div>
 
-                <div className="mt-6 p-4 rounded-xl bg-success/10 border border-success/20">
-                  <p className="text-sm font-medium">
-                    This screen demonstrates Federated Learning implementation
-                  </p>
-                </div>
               </Card>
 
               {/* System Log */}

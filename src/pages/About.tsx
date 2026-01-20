@@ -18,7 +18,7 @@ export default function About() {
     "Develop a heart disease prediction model using federated learning",
     "Ensure patient data privacy through decentralized training",
     "Achieve high prediction accuracy comparable to centralized models",
-    "Demonstrate practical implementation of privacy-preserving ML",
+    "Deliver a practical implementation of privacy-preserving ML",
     "Create an intuitive web interface for healthcare professionals",
   ];
 

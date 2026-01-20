@@ -20,7 +20,7 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const success = await login(username, password);
+    const success = await login(username, password, role);
 
     if (success) {
       toast({
@@ -28,12 +28,6 @@ export default function Login() {
         description: "You have successfully logged in.",
       });
       
-      // Navigate based on selected role
-      // TODO: In production, implement proper role-based access control (RBAC)
-      // - Validate selected role against user's actual role from backend
-      // - Store role in user context/session
-      // - Implement middleware to protect dashboard routes
-      // Current implementation is for demonstration purposes only
       if (role === "hospital") {
         navigate("/hospital-dashboard");
       } else {
@@ -42,7 +36,7 @@ export default function Login() {
     } else {
       toast({
         title: "Login failed",
-        description: "Invalid username or password.",
+        description: "Invalid credentials or role selection.",
         variant: "destructive",
       });
     }
@@ -82,7 +76,7 @@ export default function Login() {
           <div className="glass-card rounded-3xl p-8 animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
             {/* Role Selector */}
             <div className="mb-6">
-              <Label className="mb-3 block">Select Role</Label>
+              <Label className="mb-3 block">Select Access Role</Label>
               <div className="grid grid-cols-2 gap-3">
                 {roles.map((roleOption) => (
                   <Card
@@ -179,12 +173,6 @@ export default function Login() {
             </div>
           </div>
 
-          {/* Demo credentials */}
-          <div className="mt-6 p-4 glass-card rounded-xl animate-fade-in" style={{ animationDelay: "0.2s" }}>
-            <p className="text-sm text-center text-muted-foreground">
-              <span className="font-medium text-foreground">Demo:</span> Register a new account to test the system
-            </p>
-          </div>
         </div>
       </div>
     </BlurBackground>
