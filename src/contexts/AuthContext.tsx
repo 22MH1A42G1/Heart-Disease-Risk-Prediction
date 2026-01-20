@@ -1,14 +1,25 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 
+type UserRole = "hospital" | "admin";
+
 interface User {
   id: string;
   username: string;
   email: string;
+  role: UserRole;
+}
+
+interface StoredUser {
+  id: string;
+  username: string;
+  email: string;
+  password: string;
+  role?: UserRole;
 }
 
 interface AuthContextType {
   user: User | null;
-  login: (username: string, password: string) => Promise<boolean>;
+  login: (username: string, password: string, role: UserRole) => Promise<boolean>;
   register: (username: string, email: string, password: string) => Promise<boolean>;
   logout: () => void;
   isLoading: boolean;
@@ -19,19 +30,35 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(() => {
     const saved = localStorage.getItem("heartfl-user");
-    return saved ? JSON.parse(saved) : null;
+    if (!saved) {
+      return null;
+    }
+    const parsed = JSON.parse(saved) as Partial<User>;
+    if (!parsed.id || !parsed.username) {
+      return null;
+    }
+    return {
+      id: parsed.id,
+      username: parsed.username,
+      email: parsed.email ?? "",
+      role: parsed.role ?? "hospital",
+    };
   });
   const [isLoading, setIsLoading] = useState(false);
 
-  const login = async (username: string, password: string): Promise<boolean> => {
+  const login = async (
+    username: string,
+    password: string,
+    role: UserRole
+  ): Promise<boolean> => {
     setIsLoading(true);
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1000));
     
     // Get registered users from localStorage
-    const users = JSON.parse(localStorage.getItem("heartfl-users") || "[]");
+    const users = JSON.parse(localStorage.getItem("heartfl-users") || "[]") as StoredUser[];
     const foundUser = users.find(
-      (u: any) => u.username === username && u.password === password
+      (u) => u.username === username && u.password === password
     );
 
     if (foundUser) {
@@ -39,6 +66,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         id: foundUser.id,
         username: foundUser.username,
         email: foundUser.email,
+        role,
       };
       setUser(loggedInUser);
       localStorage.setItem("heartfl-user", JSON.stringify(loggedInUser));
@@ -59,19 +87,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    const users = JSON.parse(localStorage.getItem("heartfl-users") || "[]");
+    const users = JSON.parse(localStorage.getItem("heartfl-users") || "[]") as StoredUser[];
     
     // Check if user already exists
-    if (users.some((u: any) => u.username === username || u.email === email)) {
+    if (users.some((u) => u.username === username || u.email === email)) {
       setIsLoading(false);
       return false;
     }
 
-    const newUser = {
+    const newUser: StoredUser = {
       id: crypto.randomUUID(),
       username,
       email,
       password,
+      role: "hospital",
     };
 
     users.push(newUser);

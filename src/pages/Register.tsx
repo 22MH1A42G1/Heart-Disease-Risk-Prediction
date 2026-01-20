@@ -169,10 +169,6 @@ export default function Register() {
             </div>
           </div>
 
-          {/* Security note */}
-          <p className="text-center text-sm text-muted-foreground mt-6 animate-fade-in" style={{ animationDelay: "0.2s" }}>
-            Your data is secured with end-to-end encryption
-          </p>
         </div>
       </div>
     </BlurBackground>

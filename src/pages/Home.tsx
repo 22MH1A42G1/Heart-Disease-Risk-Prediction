@@ -3,8 +3,15 @@ import { GlowingButton } from "@/components/GlowingButton";
 import { Link } from "react-router-dom";
 import { Activity, Shield, Brain, Database, ArrowRight, Users, Lock, BarChart3, FileText, Settings, Building2, Github, Mail, Info, Stethoscope } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Home() {
+  const { user } = useAuth();
+  const dashboardPath = user ? (user.role === "admin" ? "/admin-dashboard" : "/hospital-dashboard") : "/login";
+  const primaryCtaPath = user?.role === "admin" ? "/admin-dashboard" : "/hospital-dashboard";
+  const primaryCtaLabel = user?.role === "admin" ? "System Administration" : "Cardiovascular Risk Assessment";
+  const dashboardCtaLabel = user?.role === "admin" ? "Access Admin Dashboard" : "Access Hospital Dashboard";
+
   const features = [
     {
       icon: Shield,
@@ -59,17 +66,19 @@ export default function Home() {
               className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in"
               style={{ animationDelay: "0.3s" }}
             >
-              <Link to="/hospital-dashboard">
+              <Link to={primaryCtaPath}>
                 <GlowingButton size="lg" className="text-lg px-8">
-                  Cardiovascular Risk Assessment
+                  {primaryCtaLabel}
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </GlowingButton>
               </Link>
-              <Link to="/login">
-                <GlowingButton variant="outline" size="lg" glowColor="primary" className="text-lg px-8 border-2">
-                  Login
-                </GlowingButton>
-              </Link>
+              {!user && (
+                <Link to="/login">
+                  <GlowingButton variant="outline" size="lg" glowColor="primary" className="text-lg px-8 border-2">
+                    Login
+                  </GlowingButton>
+                </Link>
+              )}
             </div>
           </div>
         </section>
@@ -386,9 +395,9 @@ export default function Home() {
             <p className="text-muted-foreground mb-8">
               Trusted by healthcare professionals for accurate heart disease risk assessment using privacy-preserving federated learning.
             </p>
-            <Link to="/login">
+            <Link to={dashboardPath}>
               <GlowingButton size="lg" glowColor="heart" className="text-lg px-10">
-                Access Hospital Dashboard
+                {dashboardCtaLabel}
                 <ArrowRight className="w-5 h-5 ml-2" />
               </GlowingButton>
             </Link>

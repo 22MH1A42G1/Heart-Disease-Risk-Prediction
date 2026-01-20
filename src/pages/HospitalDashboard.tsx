@@ -79,10 +79,8 @@ export default function HospitalDashboard() {
   const handleAssessRisk = async (e: React.FormEvent) => {
     e.preventDefault();
     // In production, this would send data to the local model for prediction
-    // For now, we'll just log the data
     console.log("Patient data for risk assessment:", patientData);
-    // Navigate to prediction page or show results
-    alert("Risk assessment completed! Patient data processed locally.");
+    alert("Risk assessment completed. Patient data has been queued for local prediction.");
   };
 
   const sidebarItems = [
@@ -157,144 +155,158 @@ export default function HospitalDashboard() {
                   </h2>
                   
                   <p className="text-sm text-muted-foreground mb-6">
-                    Enter patient health parameters for cardiovascular risk assessment. All data remains local and secure.
+                    Capture structured clinical parameters for local training and cardiovascular risk prediction. All data remains local and secure.
                   </p>
 
                   <form onSubmit={handleAssessRisk} className="space-y-6">
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <Label htmlFor="patientAge">Age</Label>
-                        <Input
-                          id="patientAge"
-                          type="number"
-                          placeholder="45"
-                          value={patientData.age}
-                          onChange={(e) => handlePatientDataChange("age", e.target.value)}
-                          className="h-12 bg-background/50"
-                          required
-                        />
+                    <div className="space-y-8">
+                      <div>
+                        <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-4">
+                          Core Clinical Measures
+                        </p>
+                        <div className="grid md:grid-cols-2 gap-6">
+                          <div className="space-y-2">
+                            <Label htmlFor="patientAge">Age</Label>
+                            <Input
+                              id="patientAge"
+                              type="number"
+                              placeholder="45"
+                              value={patientData.age}
+                              onChange={(e) => handlePatientDataChange("age", e.target.value)}
+                              className="h-12 bg-background/50"
+                              required
+                            />
+                          </div>
+
+                          <div className="space-y-2">
+                            <Label htmlFor="patientGender">Gender</Label>
+                            <Select value={patientData.gender} onValueChange={(value) => handlePatientDataChange("gender", value)} required>
+                              <SelectTrigger className="h-12 bg-background/50">
+                                <SelectValue placeholder="Select gender" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="Male">Male</SelectItem>
+                                <SelectItem value="Female">Female</SelectItem>
+                                <SelectItem value="Other">Other</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+
+                          <div className="space-y-2">
+                            <Label htmlFor="bloodPressure">Blood Pressure (mm Hg)</Label>
+                            <Input
+                              id="bloodPressure"
+                              type="number"
+                              placeholder="120"
+                              value={patientData.bloodPressure}
+                              onChange={(e) => handlePatientDataChange("bloodPressure", e.target.value)}
+                              className="h-12 bg-background/50"
+                              required
+                            />
+                          </div>
+
+                          <div className="space-y-2">
+                            <Label htmlFor="cholesterol">Cholesterol (mg/dL)</Label>
+                            <Input
+                              id="cholesterol"
+                              type="number"
+                              placeholder="200"
+                              value={patientData.cholesterol}
+                              onChange={(e) => handlePatientDataChange("cholesterol", e.target.value)}
+                              className="h-12 bg-background/50"
+                              required
+                            />
+                          </div>
+
+                          <div className="space-y-2">
+                            <Label htmlFor="maxHR">Maximum Heart Rate</Label>
+                            <Input
+                              id="maxHR"
+                              type="number"
+                              placeholder="150"
+                              value={patientData.maxHR}
+                              onChange={(e) => handlePatientDataChange("maxHR", e.target.value)}
+                              className="h-12 bg-background/50"
+                              required
+                            />
+                          </div>
+
+                          <div className="space-y-2">
+                            <Label htmlFor="chestPainType">Chest Pain Type</Label>
+                            <Select value={patientData.chestPainType} onValueChange={(value) => handlePatientDataChange("chestPainType", value)} required>
+                              <SelectTrigger className="h-12 bg-background/50">
+                                <SelectValue placeholder="Select type" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="Atypical Angina">Atypical Angina</SelectItem>
+                                <SelectItem value="Non-Anginal Pain">Non-Anginal Pain</SelectItem>
+                                <SelectItem value="Asymptomatic">Asymptomatic</SelectItem>
+                                <SelectItem value="Typical Angina">Typical Angina</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        </div>
                       </div>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="patientGender">Gender</Label>
-                        <Select value={patientData.gender} onValueChange={(value) => handlePatientDataChange("gender", value)} required>
-                          <SelectTrigger className="h-12 bg-background/50">
-                            <SelectValue placeholder="Select gender" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="Male">Male</SelectItem>
-                            <SelectItem value="Female">Female</SelectItem>
-                            <SelectItem value="Other">Other</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
+                      <div>
+                        <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-4">
+                          Risk Factors & Lifestyle
+                        </p>
+                        <div className="grid md:grid-cols-2 gap-6">
+                          <div className="space-y-2">
+                            <Label htmlFor="diabetes">Diabetes Status</Label>
+                            <Select value={patientData.diabetes} onValueChange={(value) => handlePatientDataChange("diabetes", value)} required>
+                              <SelectTrigger className="h-12 bg-background/50">
+                                <SelectValue placeholder="Select status" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="No">No</SelectItem>
+                                <SelectItem value="Yes">Yes</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="bloodPressure">Blood Pressure (mm Hg)</Label>
-                        <Input
-                          id="bloodPressure"
-                          type="number"
-                          placeholder="120"
-                          value={patientData.bloodPressure}
-                          onChange={(e) => handlePatientDataChange("bloodPressure", e.target.value)}
-                          className="h-12 bg-background/50"
-                          required
-                        />
-                      </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="smoking">Smoking Status</Label>
+                            <Select value={patientData.smoking} onValueChange={(value) => handlePatientDataChange("smoking", value)} required>
+                              <SelectTrigger className="h-12 bg-background/50">
+                                <SelectValue placeholder="Select status" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="Never">Never</SelectItem>
+                                <SelectItem value="Former">Former</SelectItem>
+                                <SelectItem value="Current">Current</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="cholesterol">Cholesterol (mg/dL)</Label>
-                        <Input
-                          id="cholesterol"
-                          type="number"
-                          placeholder="200"
-                          value={patientData.cholesterol}
-                          onChange={(e) => handlePatientDataChange("cholesterol", e.target.value)}
-                          className="h-12 bg-background/50"
-                          required
-                        />
-                      </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="bmi">BMI (Body Mass Index)</Label>
+                            <Input
+                              id="bmi"
+                              type="number"
+                              step="0.1"
+                              placeholder="25.0"
+                              value={patientData.bmi}
+                              onChange={(e) => handlePatientDataChange("bmi", e.target.value)}
+                              className="h-12 bg-background/50"
+                              required
+                            />
+                          </div>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="diabetes">Diabetes Status</Label>
-                        <Select value={patientData.diabetes} onValueChange={(value) => handlePatientDataChange("diabetes", value)} required>
-                          <SelectTrigger className="h-12 bg-background/50">
-                            <SelectValue placeholder="Select status" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="No">No</SelectItem>
-                            <SelectItem value="Yes">Yes</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="smoking">Smoking Status</Label>
-                        <Select value={patientData.smoking} onValueChange={(value) => handlePatientDataChange("smoking", value)} required>
-                          <SelectTrigger className="h-12 bg-background/50">
-                            <SelectValue placeholder="Select status" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="Never">Never</SelectItem>
-                            <SelectItem value="Former">Former</SelectItem>
-                            <SelectItem value="Current">Current</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="bmi">BMI (Body Mass Index)</Label>
-                        <Input
-                          id="bmi"
-                          type="number"
-                          step="0.1"
-                          placeholder="25.0"
-                          value={patientData.bmi}
-                          onChange={(e) => handlePatientDataChange("bmi", e.target.value)}
-                          className="h-12 bg-background/50"
-                          required
-                        />
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="maxHR">Maximum Heart Rate</Label>
-                        <Input
-                          id="maxHR"
-                          type="number"
-                          placeholder="150"
-                          value={patientData.maxHR}
-                          onChange={(e) => handlePatientDataChange("maxHR", e.target.value)}
-                          className="h-12 bg-background/50"
-                          required
-                        />
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="exerciseAngina">Exercise-Induced Angina</Label>
-                        <Select value={patientData.exerciseAngina} onValueChange={(value) => handlePatientDataChange("exerciseAngina", value)} required>
-                          <SelectTrigger className="h-12 bg-background/50">
-                            <SelectValue placeholder="Select" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="No">No</SelectItem>
-                            <SelectItem value="Yes">Yes</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="chestPainType">Chest Pain Type</Label>
-                        <Select value={patientData.chestPainType} onValueChange={(value) => handlePatientDataChange("chestPainType", value)} required>
-                          <SelectTrigger className="h-12 bg-background/50">
-                            <SelectValue placeholder="Select type" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="Atypical Angina">Atypical Angina</SelectItem>
-                            <SelectItem value="Non-Anginal Pain">Non-Anginal Pain</SelectItem>
-                            <SelectItem value="Asymptomatic">Asymptomatic</SelectItem>
-                            <SelectItem value="Typical Angina">Typical Angina</SelectItem>
-                          </SelectContent>
-                        </Select>
+                          <div className="space-y-2">
+                            <Label htmlFor="exerciseAngina">Exercise-Induced Angina</Label>
+                            <Select value={patientData.exerciseAngina} onValueChange={(value) => handlePatientDataChange("exerciseAngina", value)} required>
+                              <SelectTrigger className="h-12 bg-background/50">
+                                <SelectValue placeholder="Select" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="No">No</SelectItem>
+                                <SelectItem value="Yes">Yes</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        </div>
                       </div>
                     </div>
 

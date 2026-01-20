@@ -74,7 +74,7 @@ export default function Prediction() {
     const cholesterol = parseInt(formData.cholesterol) || 200;
     const bp = parseInt(formData.restingBP) || 120;
 
-    // Simple mock logic for demonstration
+    // Simple mock logic for local preview
     const riskScore =
       (age > 55 ? 0.3 : 0.1) +
       (cholesterol > 240 ? 0.3 : cholesterol > 200 ? 0.15 : 0) +
@@ -227,14 +227,14 @@ export default function Prediction() {
           <div className="text-center mb-12 animate-fade-in">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-4">
               <Activity className="w-4 h-4" />
-              <span className="text-sm font-medium">ML-Powered Analysis</span>
+              <span className="text-sm font-medium">Clinical Decision Support</span>
             </div>
             <h1 className="text-3xl md:text-4xl font-bold mb-4">
-              Cardiovascular <span className="text-gradient">Risk Assessment</span>
+              Cardiovascular <span className="text-gradient">Risk Stratification</span>
             </h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Enter patient health parameters below. Our federated learning model will
-              analyze the data and provide a comprehensive risk assessment.
+              Enter structured patient parameters below. The federated learning model will
+              generate a clinical risk stratification report with evidence-based guidance.
             </p>
           </div>
 
