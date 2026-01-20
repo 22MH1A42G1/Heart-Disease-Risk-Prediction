@@ -3,7 +3,7 @@ import { GlowingButton } from "@/components/GlowingButton";
 import { Link } from "react-router-dom";
 import { Activity, Shield, Brain, Database, ArrowRight, Users, Lock, BarChart3, FileText, Settings, Building2, Github, Mail, Info, Stethoscope } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { useAuth, type UserRole } from "@/contexts/AuthContext";
+import { useAuth, DEFAULT_USER_ROLE, type UserRole } from "@/contexts/AuthContext";
 
 const dashboardPaths = {
   hospital: "/hospital-dashboard",
@@ -22,7 +22,7 @@ const dashboardLabels = {
 
 export default function Home() {
   const { user } = useAuth();
-  const resolvedRole = (user?.role ?? "hospital") as UserRole;
+  const resolvedRole = (user?.role ?? DEFAULT_USER_ROLE) as UserRole;
   const isAuthenticated = Boolean(user);
   const dashboardPath = isAuthenticated ? dashboardPaths[resolvedRole] : "/login";
   const primaryCtaPath = isAuthenticated ? dashboardPaths[resolvedRole] : "/login";

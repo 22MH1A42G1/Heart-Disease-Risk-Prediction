@@ -6,6 +6,17 @@ import { Activity, Moon, Sun, Menu, X, LogOut, User } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 
+const navLinksByRole = {
+  hospital: [
+    { name: "Prediction", path: "/predict" },
+    { name: "Hospital Dashboard", path: "/hospital-dashboard" },
+  ],
+  admin: [
+    { name: "Admin Dashboard", path: "/admin-dashboard" },
+    { name: "FL Dashboard", path: "/fl-dashboard" },
+  ],
+} as const;
+
 export function Navbar() {
   const { theme, setTheme } = useTheme();
   const location = useLocation();
@@ -16,18 +27,7 @@ export function Navbar() {
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
-    ...(user?.role === "hospital"
-      ? [
-          { name: "Prediction", path: "/predict" },
-          { name: "Hospital Dashboard", path: "/hospital-dashboard" },
-        ]
-      : []),
-    ...(user?.role === "admin"
-      ? [
-          { name: "Admin Dashboard", path: "/admin-dashboard" },
-          { name: "FL Dashboard", path: "/fl-dashboard" },
-        ]
-      : []),
+    ...(user ? navLinksByRole[user.role] ?? [] : []),
   ];
 
   const handleLogout = () => {

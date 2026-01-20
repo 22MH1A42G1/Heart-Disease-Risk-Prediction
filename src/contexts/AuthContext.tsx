@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 
 export type UserRole = "hospital" | "admin";
+export const DEFAULT_USER_ROLE: UserRole = "hospital";
 
 interface User {
   id: string;
@@ -41,7 +42,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       id: parsed.id,
       username: parsed.username,
       email: parsed.email ?? "",
-      role: parsed.role ?? "hospital",
+      role: parsed.role ?? DEFAULT_USER_ROLE,
     };
   });
   const [isLoading, setIsLoading] = useState(false);
@@ -62,7 +63,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     );
 
     if (foundUser) {
-      const resolvedRole = foundUser.role ?? "hospital";
+      const resolvedRole = foundUser.role ?? DEFAULT_USER_ROLE;
       if (resolvedRole !== role) {
         setIsLoading(false);
         return false;
@@ -100,12 +101,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return false;
     }
 
+    // Default role for self-registered users is hospital
     const newUser: StoredUser = {
       id: crypto.randomUUID(),
       username,
       email,
       password,
-      role: "hospital",
+      role: DEFAULT_USER_ROLE,
     };
 
     users.push(newUser);
