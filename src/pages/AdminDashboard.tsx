@@ -178,7 +178,7 @@ export default function AdminDashboard() {
                   ) : (
                     <>
                       <Server className="w-5 h-5 mr-2" />
-                      🔘 Aggregate Models (FedAvg)
+                      Aggregate Models (FedAvg)
                     </>
                   )}
                 </GlowingButton>
@@ -251,7 +251,7 @@ export default function AdminDashboard() {
 
                 <div className="mt-6 p-4 rounded-xl bg-success/10 border border-success/20">
                   <p className="text-sm font-medium">
-                    ⭐ This screen proves Federated Learning implementation
+                    This screen demonstrates Federated Learning implementation
                   </p>
                 </div>
               </Card>

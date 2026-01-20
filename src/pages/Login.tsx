@@ -5,14 +5,14 @@ import { GlowingButton } from "@/components/GlowingButton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
-import { Heart, Lock, User, Loader2, ArrowRight, Building2, Settings } from "lucide-react";
+import { Activity, Lock, User, Loader2, ArrowRight, Building2, Settings } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Card } from "@/components/ui/card";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState<"patient" | "hospital" | "admin">("patient");
+  const [role, setRole] = useState<"hospital" | "admin">("hospital");
   const { login, isLoading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -36,10 +36,8 @@ export default function Login() {
       // Current implementation is for demonstration purposes only
       if (role === "hospital") {
         navigate("/hospital-dashboard");
-      } else if (role === "admin") {
-        navigate("/admin-dashboard");
       } else {
-        navigate("/predict");
+        navigate("/admin-dashboard");
       }
     } else {
       toast({
@@ -52,16 +50,10 @@ export default function Login() {
 
   const roles = [
     {
-      id: "patient" as const,
-      icon: User,
-      label: "Patient",
-      description: "Access predictions and health reports",
-    },
-    {
       id: "hospital" as const,
       icon: Building2,
       label: "Hospital",
-      description: "Manage local training and data",
+      description: "Manage local training and patient data entry",
     },
     {
       id: "admin" as const,
@@ -78,11 +70,11 @@ export default function Login() {
           {/* Logo */}
           <div className="text-center mb-8 animate-fade-in">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-secondary/20 mb-4">
-              <Heart className="w-8 h-8 text-secondary animate-heart-beat" />
+              <Activity className="w-8 h-8 text-secondary" />
             </div>
             <h1 className="text-3xl font-bold">Welcome Back</h1>
             <p className="text-muted-foreground mt-2">
-              Login to access heart disease prediction
+              Login to access HeartFL system
             </p>
           </div>
 
@@ -91,7 +83,7 @@ export default function Login() {
             {/* Role Selector */}
             <div className="mb-6">
               <Label className="mb-3 block">Select Role</Label>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 gap-3">
                 {roles.map((roleOption) => (
                   <Card
                     key={roleOption.id}

@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Heart, Activity, Loader2, AlertTriangle, CheckCircle, Info, BarChart3 } from "lucide-react";
+import { Activity, Loader2, AlertTriangle, CheckCircle, Info, BarChart3, Stethoscope } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate } from "react-router-dom";
 
@@ -230,11 +230,11 @@ export default function Prediction() {
               <span className="text-sm font-medium">ML-Powered Analysis</span>
             </div>
             <h1 className="text-3xl md:text-4xl font-bold mb-4">
-              Heart Disease <span className="text-gradient">Risk Prediction</span>
+              Cardiovascular <span className="text-gradient">Risk Assessment</span>
             </h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Enter patient health parameters below. Our federated learning model will
-              analyze the data and provide a risk assessment.
+              analyze the data and provide a comprehensive risk assessment.
             </p>
           </div>
 
@@ -291,8 +291,8 @@ export default function Prediction() {
                         </>
                       ) : (
                         <>
-                          <Heart className="w-5 h-5 mr-2" />
-                          Predict Heart Disease Risk
+                          <Stethoscope className="w-5 h-5 mr-2" />
+                          Assess Cardiovascular Risk
                         </>
                       )}
                     </GlowingButton>
@@ -368,11 +368,11 @@ export default function Prediction() {
                           }`}
                         >
                           <span className="text-xl font-bold">
-                            {result.risk === "High" ? "🔴 High Risk" : result.risk === "Medium" ? "🟡 Medium Risk" : "🟢 Low Risk"}
+                            {result.risk} Risk
                           </span>
                         </div>
                         <p className="text-muted-foreground">
-                          Heart Disease Prediction
+                          Cardiovascular Disease Risk
                         </p>
                       </div>
 
@@ -402,17 +402,17 @@ export default function Prediction() {
                       <div className="space-y-3">
                         <h4 className="font-semibold flex items-center gap-2">
                           <BarChart3 className="w-4 h-4 text-primary" />
-                          Top 3 Risk Factors
+                          Key Contributing Factors
                         </h4>
                         <p className="text-xs text-muted-foreground mb-3">
-                          Explainable AI shows which factors contribute most to your risk score
+                          Explainable AI analysis showing which clinical factors contribute most to the risk assessment
                         </p>
                         <div className="space-y-3">
                           {result.featureImportance.slice(0, 3).map((item, index) => (
                             <div key={item.feature} className="space-y-1">
                               <div className="flex justify-between text-sm">
                                 <span className="flex items-center gap-2">
-                                  <span className="text-lg">{index === 0 ? "🥇" : index === 1 ? "🥈" : "🥉"}</span>
+                                  <span className="text-lg">{index === 0 ? "①" : index === 1 ? "②" : "③"}</span>
                                   {item.feature}
                                 </span>
                                 <span className="font-semibold">
@@ -437,7 +437,7 @@ export default function Prediction() {
                       <div className="space-y-3">
                         <h4 className="font-semibold flex items-center gap-2">
                           <Info className="w-4 h-4 text-primary" />
-                          Recommendations
+                          Clinical Recommendations
                         </h4>
                         <ul className="space-y-2">
                           {result.suggestions.map((suggestion, index) => (
@@ -454,12 +454,12 @@ export default function Prediction() {
                     </div>
                   ) : (
                     <div className="text-center py-8">
-                      <Heart className="w-16 h-16 mx-auto text-muted-foreground/30 mb-4" />
+                      <Activity className="w-16 h-16 mx-auto text-muted-foreground/30 mb-4" />
                       <h3 className="text-lg font-semibold mb-2">
-                        No Prediction Yet
+                        No Assessment Yet
                       </h3>
                       <p className="text-sm text-muted-foreground">
-                        Fill in the form and click predict to see results
+                        Complete the form and submit to view risk assessment
                       </p>
                     </div>
                   )}

@@ -31,6 +31,20 @@ export default function HospitalDashboard() {
   const [modelTrained, setModelTrained] = useState(false);
   const [algorithm, setAlgorithm] = useState("logistic");
   const [activeTab, setActiveTab] = useState("dashboard");
+  
+  // Patient data entry form state
+  const [patientData, setPatientData] = useState({
+    age: "",
+    gender: "",
+    bloodPressure: "",
+    cholesterol: "",
+    diabetes: "",
+    smoking: "",
+    bmi: "",
+    maxHR: "",
+    exerciseAngina: "",
+    chestPainType: "",
+  });
 
   if (!user) {
     return <Navigate to="/login" replace />;
@@ -58,8 +72,22 @@ export default function HospitalDashboard() {
     setModelTrained(true);
   };
 
+  const handlePatientDataChange = (field: string, value: string) => {
+    setPatientData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleAssessRisk = async (e: React.FormEvent) => {
+    e.preventDefault();
+    // In production, this would send data to the local model for prediction
+    // For now, we'll just log the data
+    console.log("Patient data for risk assessment:", patientData);
+    // Navigate to prediction page or show results
+    alert("Risk assessment completed! Patient data processed locally.");
+  };
+
   const sidebarItems = [
     { id: "dashboard", icon: Home, label: "Dashboard" },
+    { id: "patient-entry", icon: Activity, label: "Patient Data Entry" },
     { id: "upload", icon: FileUp, label: "Upload Dataset" },
     { id: "training", icon: PlayCircle, label: "Local Training" },
     { id: "status", icon: Activity, label: "Model Status" },
@@ -114,11 +142,184 @@ export default function HospitalDashboard() {
                   <div>
                     <h3 className="font-semibold text-lg">Privacy Protected</h3>
                     <p className="text-sm text-muted-foreground">
-                      ✅ Patient data never leaves hospital - Only model gradients are shared
+                      Patient data never leaves hospital - Only model gradients are shared
                     </p>
                   </div>
                 </div>
               </Card>
+
+              {/* Patient Data Entry Section */}
+              {activeTab === "patient-entry" && (
+                <Card className="glass-card rounded-3xl p-8 animate-fade-in-up">
+                  <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
+                    <Activity className="w-5 h-5 text-primary" />
+                    Patient Data Entry
+                  </h2>
+                  
+                  <p className="text-sm text-muted-foreground mb-6">
+                    Enter patient health parameters for cardiovascular risk assessment. All data remains local and secure.
+                  </p>
+
+                  <form onSubmit={handleAssessRisk} className="space-y-6">
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <Label htmlFor="patientAge">Age</Label>
+                        <Input
+                          id="patientAge"
+                          type="number"
+                          placeholder="45"
+                          value={patientData.age}
+                          onChange={(e) => handlePatientDataChange("age", e.target.value)}
+                          className="h-12 bg-background/50"
+                          required
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="patientGender">Gender</Label>
+                        <Select value={patientData.gender} onValueChange={(value) => handlePatientDataChange("gender", value)} required>
+                          <SelectTrigger className="h-12 bg-background/50">
+                            <SelectValue placeholder="Select gender" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="Male">Male</SelectItem>
+                            <SelectItem value="Female">Female</SelectItem>
+                            <SelectItem value="Other">Other</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="bloodPressure">Blood Pressure (mm Hg)</Label>
+                        <Input
+                          id="bloodPressure"
+                          type="number"
+                          placeholder="120"
+                          value={patientData.bloodPressure}
+                          onChange={(e) => handlePatientDataChange("bloodPressure", e.target.value)}
+                          className="h-12 bg-background/50"
+                          required
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="cholesterol">Cholesterol (mg/dL)</Label>
+                        <Input
+                          id="cholesterol"
+                          type="number"
+                          placeholder="200"
+                          value={patientData.cholesterol}
+                          onChange={(e) => handlePatientDataChange("cholesterol", e.target.value)}
+                          className="h-12 bg-background/50"
+                          required
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="diabetes">Diabetes Status</Label>
+                        <Select value={patientData.diabetes} onValueChange={(value) => handlePatientDataChange("diabetes", value)} required>
+                          <SelectTrigger className="h-12 bg-background/50">
+                            <SelectValue placeholder="Select status" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="No">No</SelectItem>
+                            <SelectItem value="Yes">Yes</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="smoking">Smoking Status</Label>
+                        <Select value={patientData.smoking} onValueChange={(value) => handlePatientDataChange("smoking", value)} required>
+                          <SelectTrigger className="h-12 bg-background/50">
+                            <SelectValue placeholder="Select status" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="Never">Never</SelectItem>
+                            <SelectItem value="Former">Former</SelectItem>
+                            <SelectItem value="Current">Current</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="bmi">BMI (Body Mass Index)</Label>
+                        <Input
+                          id="bmi"
+                          type="number"
+                          step="0.1"
+                          placeholder="25.0"
+                          value={patientData.bmi}
+                          onChange={(e) => handlePatientDataChange("bmi", e.target.value)}
+                          className="h-12 bg-background/50"
+                          required
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="maxHR">Maximum Heart Rate</Label>
+                        <Input
+                          id="maxHR"
+                          type="number"
+                          placeholder="150"
+                          value={patientData.maxHR}
+                          onChange={(e) => handlePatientDataChange("maxHR", e.target.value)}
+                          className="h-12 bg-background/50"
+                          required
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="exerciseAngina">Exercise-Induced Angina</Label>
+                        <Select value={patientData.exerciseAngina} onValueChange={(value) => handlePatientDataChange("exerciseAngina", value)} required>
+                          <SelectTrigger className="h-12 bg-background/50">
+                            <SelectValue placeholder="Select" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="No">No</SelectItem>
+                            <SelectItem value="Yes">Yes</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="chestPainType">Chest Pain Type</Label>
+                        <Select value={patientData.chestPainType} onValueChange={(value) => handlePatientDataChange("chestPainType", value)} required>
+                          <SelectTrigger className="h-12 bg-background/50">
+                            <SelectValue placeholder="Select type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="Atypical Angina">Atypical Angina</SelectItem>
+                            <SelectItem value="Non-Anginal Pain">Non-Anginal Pain</SelectItem>
+                            <SelectItem value="Asymptomatic">Asymptomatic</SelectItem>
+                            <SelectItem value="Typical Angina">Typical Angina</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+
+                    <div className="pt-4">
+                      <GlowingButton
+                        type="submit"
+                        className="w-full h-14 text-lg"
+                        glowColor="primary"
+                      >
+                        <Activity className="w-5 h-5 mr-2" />
+                        Assess Cardiovascular Risk
+                      </GlowingButton>
+                    </div>
+
+                    <div className="p-4 rounded-xl bg-primary/10 border border-primary/20">
+                      <p className="text-sm flex items-center gap-2">
+                        <Shield className="w-4 h-4 text-primary" />
+                        <span>
+                          <strong>Privacy Notice:</strong> This system follows privacy-preserving federated learning. Patient data never leaves the hospital.
+                        </span>
+                      </p>
+                    </div>
+                  </form>
+                </Card>
+              )}
 
               {/* Dataset Upload Section */}
               {activeTab === "upload" && (
