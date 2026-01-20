@@ -51,10 +51,6 @@ export default function About() {
         <div className="container mx-auto max-w-5xl">
           {/* Header */}
           <div className="text-center mb-12 animate-fade-in">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/10 text-secondary mb-4">
-              <BookOpen className="w-4 h-4" />
-              <span className="text-sm font-medium">Project Documentation</span>
-            </div>
             <h1 className="text-3xl md:text-4xl font-bold mb-4">
               About <span className="text-gradient">HeartFL</span>
             </h1>
