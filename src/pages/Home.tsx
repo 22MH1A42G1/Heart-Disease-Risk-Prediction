@@ -22,10 +22,9 @@ const dashboardLabels = {
 
 export default function Home() {
   const { user } = useAuth();
-  const resolvedRole = (user?.role ?? DEFAULT_USER_ROLE) as UserRole;
+  const resolvedRole: UserRole = user?.role ?? DEFAULT_USER_ROLE;
   const isAuthenticated = Boolean(user);
-  const dashboardPath = isAuthenticated ? dashboardPaths[resolvedRole] : "/login";
-  const primaryCtaPath = isAuthenticated ? dashboardPaths[resolvedRole] : "/login";
+  const ctaPath = isAuthenticated ? dashboardPaths[resolvedRole] : "/login";
   const primaryCtaLabel = ctaLabels[resolvedRole];
   const dashboardCtaLabel = dashboardLabels[resolvedRole];
 
@@ -83,7 +82,7 @@ export default function Home() {
               className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in"
               style={{ animationDelay: "0.3s" }}
             >
-              <Link to={primaryCtaPath}>
+              <Link to={ctaPath}>
                 <GlowingButton size="lg" className="text-lg px-8">
                   {primaryCtaLabel}
                   <ArrowRight className="w-5 h-5 ml-2" />
@@ -412,7 +411,7 @@ export default function Home() {
             <p className="text-muted-foreground mb-8">
               Trusted by healthcare professionals for accurate heart disease risk assessment using privacy-preserving federated learning.
             </p>
-            <Link to={dashboardPath}>
+            <Link to={ctaPath}>
               <GlowingButton size="lg" glowColor="heart" className="text-lg px-10">
                 {dashboardCtaLabel}
                 <ArrowRight className="w-5 h-5 ml-2" />
