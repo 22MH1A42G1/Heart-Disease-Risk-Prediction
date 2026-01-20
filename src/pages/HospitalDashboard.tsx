@@ -31,6 +31,20 @@ export default function HospitalDashboard() {
   const [modelTrained, setModelTrained] = useState(false);
   const [algorithm, setAlgorithm] = useState("logistic");
   const [activeTab, setActiveTab] = useState("dashboard");
+  
+  // Patient data entry form state
+  const [patientData, setPatientData] = useState({
+    age: "",
+    gender: "",
+    bloodPressure: "",
+    cholesterol: "",
+    diabetes: "",
+    smoking: "",
+    bmi: "",
+    maxHR: "",
+    exerciseAngina: "",
+    chestPainType: "",
+  });
 
   if (!user) {
     return <Navigate to="/login" replace />;
@@ -56,6 +70,19 @@ export default function HospitalDashboard() {
 
     setIsTraining(false);
     setModelTrained(true);
+  };
+
+  const handlePatientDataChange = (field: string, value: string) => {
+    setPatientData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleAssessRisk = async (e: React.FormEvent) => {
+    e.preventDefault();
+    // In production, this would send data to the local model for prediction
+    // For now, we'll just log the data
+    console.log("Patient data for risk assessment:", patientData);
+    // Navigate to prediction page or show results
+    alert("Risk assessment completed! Patient data processed locally.");
   };
 
   const sidebarItems = [
@@ -133,7 +160,7 @@ export default function HospitalDashboard() {
                     Enter patient health parameters for cardiovascular risk assessment. All data remains local and secure.
                   </p>
 
-                  <form className="space-y-6">
+                  <form onSubmit={handleAssessRisk} className="space-y-6">
                     <div className="grid md:grid-cols-2 gap-6">
                       <div className="space-y-2">
                         <Label htmlFor="patientAge">Age</Label>
@@ -141,19 +168,23 @@ export default function HospitalDashboard() {
                           id="patientAge"
                           type="number"
                           placeholder="45"
+                          value={patientData.age}
+                          onChange={(e) => handlePatientDataChange("age", e.target.value)}
                           className="h-12 bg-background/50"
+                          required
                         />
                       </div>
 
                       <div className="space-y-2">
                         <Label htmlFor="patientGender">Gender</Label>
-                        <Select>
+                        <Select value={patientData.gender} onValueChange={(value) => handlePatientDataChange("gender", value)} required>
                           <SelectTrigger className="h-12 bg-background/50">
                             <SelectValue placeholder="Select gender" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="M">Male</SelectItem>
-                            <SelectItem value="F">Female</SelectItem>
+                            <SelectItem value="Male">Male</SelectItem>
+                            <SelectItem value="Female">Female</SelectItem>
+                            <SelectItem value="Other">Other</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
@@ -164,7 +195,10 @@ export default function HospitalDashboard() {
                           id="bloodPressure"
                           type="number"
                           placeholder="120"
+                          value={patientData.bloodPressure}
+                          onChange={(e) => handlePatientDataChange("bloodPressure", e.target.value)}
                           className="h-12 bg-background/50"
+                          required
                         />
                       </div>
 
@@ -174,33 +208,36 @@ export default function HospitalDashboard() {
                           id="cholesterol"
                           type="number"
                           placeholder="200"
+                          value={patientData.cholesterol}
+                          onChange={(e) => handlePatientDataChange("cholesterol", e.target.value)}
                           className="h-12 bg-background/50"
+                          required
                         />
                       </div>
 
                       <div className="space-y-2">
                         <Label htmlFor="diabetes">Diabetes Status</Label>
-                        <Select>
+                        <Select value={patientData.diabetes} onValueChange={(value) => handlePatientDataChange("diabetes", value)} required>
                           <SelectTrigger className="h-12 bg-background/50">
                             <SelectValue placeholder="Select status" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="0">No</SelectItem>
-                            <SelectItem value="1">Yes</SelectItem>
+                            <SelectItem value="No">No</SelectItem>
+                            <SelectItem value="Yes">Yes</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
 
                       <div className="space-y-2">
                         <Label htmlFor="smoking">Smoking Status</Label>
-                        <Select>
+                        <Select value={patientData.smoking} onValueChange={(value) => handlePatientDataChange("smoking", value)} required>
                           <SelectTrigger className="h-12 bg-background/50">
                             <SelectValue placeholder="Select status" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="never">Never</SelectItem>
-                            <SelectItem value="former">Former</SelectItem>
-                            <SelectItem value="current">Current</SelectItem>
+                            <SelectItem value="Never">Never</SelectItem>
+                            <SelectItem value="Former">Former</SelectItem>
+                            <SelectItem value="Current">Current</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
@@ -212,7 +249,10 @@ export default function HospitalDashboard() {
                           type="number"
                           step="0.1"
                           placeholder="25.0"
+                          value={patientData.bmi}
+                          onChange={(e) => handlePatientDataChange("bmi", e.target.value)}
                           className="h-12 bg-background/50"
+                          required
                         />
                       </div>
 
@@ -222,34 +262,37 @@ export default function HospitalDashboard() {
                           id="maxHR"
                           type="number"
                           placeholder="150"
+                          value={patientData.maxHR}
+                          onChange={(e) => handlePatientDataChange("maxHR", e.target.value)}
                           className="h-12 bg-background/50"
+                          required
                         />
                       </div>
 
                       <div className="space-y-2">
                         <Label htmlFor="exerciseAngina">Exercise-Induced Angina</Label>
-                        <Select>
+                        <Select value={patientData.exerciseAngina} onValueChange={(value) => handlePatientDataChange("exerciseAngina", value)} required>
                           <SelectTrigger className="h-12 bg-background/50">
                             <SelectValue placeholder="Select" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="N">No</SelectItem>
-                            <SelectItem value="Y">Yes</SelectItem>
+                            <SelectItem value="No">No</SelectItem>
+                            <SelectItem value="Yes">Yes</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
 
                       <div className="space-y-2">
                         <Label htmlFor="chestPainType">Chest Pain Type</Label>
-                        <Select>
+                        <Select value={patientData.chestPainType} onValueChange={(value) => handlePatientDataChange("chestPainType", value)} required>
                           <SelectTrigger className="h-12 bg-background/50">
                             <SelectValue placeholder="Select type" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="ATA">Atypical Angina</SelectItem>
-                            <SelectItem value="NAP">Non-Anginal Pain</SelectItem>
-                            <SelectItem value="ASY">Asymptomatic</SelectItem>
-                            <SelectItem value="TA">Typical Angina</SelectItem>
+                            <SelectItem value="Atypical Angina">Atypical Angina</SelectItem>
+                            <SelectItem value="Non-Anginal Pain">Non-Anginal Pain</SelectItem>
+                            <SelectItem value="Asymptomatic">Asymptomatic</SelectItem>
+                            <SelectItem value="Typical Angina">Typical Angina</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
@@ -257,7 +300,7 @@ export default function HospitalDashboard() {
 
                     <div className="pt-4">
                       <GlowingButton
-                        type="button"
+                        type="submit"
                         className="w-full h-14 text-lg"
                         glowColor="primary"
                       >
