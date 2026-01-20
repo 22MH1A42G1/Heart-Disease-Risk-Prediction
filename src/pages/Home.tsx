@@ -496,12 +496,12 @@ export default function Home() {
                 <ul className="space-y-2 text-sm text-muted-foreground">
                   <li className="flex items-center gap-2">
                     <Mail className="w-4 h-4" />
-                    <a href="mailto:contact@heartfl.com" className="hover:text-primary transition-colors">
+                    <a href="mailto:adityaindana@gmail.com" className="hover:text-primary transition-colors">
                       Contact Us
                     </a>
                   </li>
-                  <li>Team: Final Year Project</li>
-                  <li>University Research Initiative</li>
+                  <li>Team: Final Year Project CSE(AI&ML) Batch-E1</li>
+                  <li>Aditya College of Engineering & Technology</li>
                 </ul>
               </div>
             </div>
