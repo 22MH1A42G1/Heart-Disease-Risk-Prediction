@@ -30,6 +30,11 @@ interface FormField {
   options?: { value: string; label: string }[];
 }
 
+const MODEL_TYPE_LABELS = {
+  hospital: "📍 Prediction based on Hospital Local Model",
+  admin: "🌐 Prediction based on Aggregated Global Model",
+} as const;
+
 export default function Prediction() {
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
@@ -60,7 +65,7 @@ export default function Prediction() {
 
   // Check if all fields are filled
   const isFormValid = () => {
-    return Object.values(formData).every(value => value !== "");
+    return Object.values(formData).every(value => value != null && value.toString().trim() !== "");
   };
 
   const handlePredict = async (e: React.FormEvent) => {
@@ -507,8 +512,8 @@ export default function Prediction() {
                       <div className="p-3 rounded-lg bg-primary/10 border border-primary/20">
                         <p className="text-xs font-medium text-primary">
                           {user?.role === "hospital" 
-                            ? "📍 Prediction based on Hospital Local Model" 
-                            : "🌐 Prediction based on Aggregated Global Model"}
+                            ? MODEL_TYPE_LABELS.hospital
+                            : MODEL_TYPE_LABELS.admin}
                         </p>
                       </div>
                     </div>
