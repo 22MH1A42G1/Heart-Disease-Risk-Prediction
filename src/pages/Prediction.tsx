@@ -21,6 +21,20 @@ interface PredictionResult {
   }[];
 }
 
+interface FormField {
+  id: string;
+  label: string;
+  type: "number" | "select";
+  placeholder?: string;
+  step?: string;
+  options?: { value: string; label: string }[];
+}
+
+const MODEL_TYPE_LABELS = {
+  hospital: "📍 Prediction based on Hospital Local Model",
+  admin: "🌐 Prediction based on Aggregated Global Model",
+} as const;
+
 export default function Prediction() {
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
@@ -49,8 +63,19 @@ export default function Prediction() {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
+  // Check if all fields are filled
+  const isFormValid = () => {
+    return Object.values(formData).every(value => value != null && value.toString().trim() !== "");
+  };
+
   const handlePredict = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate all fields are filled
+    if (!isFormValid()) {
+      return;
+    }
+    
     setIsLoading(true);
     setProgress(0);
 
@@ -153,11 +178,11 @@ export default function Prediction() {
     setProgress(0);
   };
 
-  const formFields = [
-    { id: "age", label: "Age", type: "number", placeholder: "45" },
+  const formFields: FormField[] = [
+    { id: "age", label: "Age (years) *", type: "number", placeholder: "" },
     {
       id: "sex",
-      label: "Sex",
+      label: "Gender *",
       type: "select",
       options: [
         { value: "M", label: "Male" },
@@ -166,7 +191,7 @@ export default function Prediction() {
     },
     {
       id: "chestPainType",
-      label: "Chest Pain Type",
+      label: "Chest Pain Type *",
       type: "select",
       options: [
         { value: "ATA", label: "Atypical Angina (ATA)" },
@@ -175,20 +200,20 @@ export default function Prediction() {
         { value: "TA", label: "Typical Angina (TA)" },
       ],
     },
-    { id: "restingBP", label: "Resting Blood Pressure (mm Hg)", type: "number", placeholder: "120" },
-    { id: "cholesterol", label: "Cholesterol (mg/dL)", type: "number", placeholder: "200" },
+    { id: "restingBP", label: "Resting Blood Pressure (mm Hg) *", type: "number", placeholder: "" },
+    { id: "cholesterol", label: "Cholesterol Level (mg/dL) *", type: "number", placeholder: "" },
     {
       id: "fastingBS",
-      label: "Fasting Blood Sugar > 120 mg/dL",
+      label: "Fasting Blood Sugar / Diabetes Status *",
       type: "select",
       options: [
-        { value: "0", label: "No" },
-        { value: "1", label: "Yes" },
+        { value: "0", label: "No (< 120 mg/dL)" },
+        { value: "1", label: "Yes (> 120 mg/dL)" },
       ],
     },
     {
       id: "restingECG",
-      label: "Resting ECG",
+      label: "ECG Result *",
       type: "select",
       options: [
         { value: "Normal", label: "Normal" },
@@ -196,20 +221,20 @@ export default function Prediction() {
         { value: "LVH", label: "Left Ventricular Hypertrophy" },
       ],
     },
-    { id: "maxHR", label: "Maximum Heart Rate", type: "number", placeholder: "150" },
+    { id: "maxHR", label: "Maximum Heart Rate *", type: "number", placeholder: "" },
     {
       id: "exerciseAngina",
-      label: "Exercise-Induced Angina",
+      label: "Exercise-Induced Angina *",
       type: "select",
       options: [
         { value: "N", label: "No" },
         { value: "Y", label: "Yes" },
       ],
     },
-    { id: "oldpeak", label: "Oldpeak (ST Depression)", type: "number", placeholder: "1.0" },
+    { id: "oldpeak", label: "Oldpeak (ST Depression) *", type: "number", placeholder: "", step: "0.1" },
     {
       id: "stSlope",
-      label: "ST Slope",
+      label: "ST Slope *",
       type: "select",
       options: [
         { value: "Up", label: "Upsloping" },
@@ -233,8 +258,8 @@ export default function Prediction() {
               Cardiovascular <span className="text-gradient">Risk Stratification</span>
             </h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Enter structured patient parameters below. The federated learning model will
-              generate a clinical risk stratification report with evidence-based guidance.
+              Enter patient clinical parameters below. Each prediction is performed using your hospital's locally trained model,
+              ensuring complete data privacy and security.
             </p>
           </div>
 
@@ -271,6 +296,8 @@ export default function Prediction() {
                             value={formData[field.id as keyof typeof formData]}
                             onChange={(e) => handleInputChange(field.id, e.target.value)}
                             className="h-12 bg-background/50"
+                            required
+                            step={field.step}
                           />
                         )}
                       </div>
@@ -282,7 +309,7 @@ export default function Prediction() {
                       type="submit"
                       className="w-full h-14 text-lg"
                       glowColor="heart"
-                      disabled={isLoading}
+                      disabled={isLoading || !isFormValid()}
                     >
                       {isLoading ? (
                         <>
@@ -296,6 +323,12 @@ export default function Prediction() {
                         </>
                       )}
                     </GlowingButton>
+
+                    {!isFormValid() && !isLoading && (
+                      <p className="mt-3 text-sm text-center text-muted-foreground">
+                        Please fill in all required fields (marked with *)
+                      </p>
+                    )}
 
                     {/* Progress Bar */}
                     {isLoading && (
@@ -471,11 +504,18 @@ export default function Prediction() {
                     <Info className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                     <div>
                       <h4 className="font-semibold mb-1">About This Model</h4>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-sm text-muted-foreground mb-3">
                         This prediction uses a federated learning model trained
                         across multiple hospitals without sharing patient data,
                         ensuring privacy while maintaining accuracy.
                       </p>
+                      <div className="p-3 rounded-lg bg-primary/10 border border-primary/20">
+                        <p className="text-xs font-medium text-primary">
+                          {user?.role === "hospital" 
+                            ? MODEL_TYPE_LABELS.hospital
+                            : MODEL_TYPE_LABELS.admin}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </Card>

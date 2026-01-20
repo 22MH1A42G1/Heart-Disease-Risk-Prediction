@@ -105,7 +105,7 @@ export default function HospitalDashboard() {
               Hospital <span className="text-gradient">Dashboard</span>
             </h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Local Model Training - Your patient data never leaves this facility
+              Upload your hospital's local dataset and train models securely. Patient data never leaves this facility.
             </p>
           </div>
 
@@ -338,10 +338,17 @@ export default function HospitalDashboard() {
                 <Card className="glass-card rounded-3xl p-8 animate-fade-in-up">
                   <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
                     <Upload className="w-5 h-5 text-primary" />
-                    Dataset Upload
+                    Upload Hospital Dataset
                   </h2>
 
                   <div className="space-y-6">
+                    <div className="p-4 rounded-xl bg-primary/10 border border-primary/20">
+                      <p className="text-sm text-muted-foreground">
+                        <strong className="text-foreground">Important:</strong> Each hospital must upload its own local patient dataset. 
+                        The system does not provide any default or centralized datasets. All data remains local and is never shared with other institutions.
+                      </p>
+                    </div>
+                    
                     <div>
                       <Label htmlFor="dataset">Upload CSV (Patient Data)</Label>
                       <div className="mt-2 border-2 border-dashed border-muted rounded-xl p-8 text-center hover:border-primary/50 transition-colors">
@@ -354,7 +361,10 @@ export default function HospitalDashboard() {
                           className="max-w-xs mx-auto"
                         />
                         <p className="text-sm text-muted-foreground mt-2">
-                          Upload CSV file with patient health records
+                          Upload CSV file with your hospital's patient health records
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Required format: Age, Sex, ChestPainType, RestingBP, Cholesterol, FastingBS, RestingECG, MaxHR, ExerciseAngina, Oldpeak, ST_Slope
                         </p>
                       </div>
                     </div>

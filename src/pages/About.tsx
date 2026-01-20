@@ -186,9 +186,9 @@ export default function About() {
                 <Database className="w-5 h-5 text-health" />
               </div>
               <div>
-                <h2 className="text-xl font-bold">Dataset Information</h2>
+                <h2 className="text-xl font-bold">Clinical Features Used</h2>
                 <p className="text-sm text-muted-foreground">
-                  UCI Heart Disease Dataset - 918 observations, 11 features
+                  Standard cardiovascular risk assessment parameters
                 </p>
               </div>
             </div>
@@ -203,6 +203,13 @@ export default function About() {
                   <p className="text-xs text-muted-foreground">{feature.description}</p>
                 </div>
               ))}
+            </div>
+            
+            <div className="mt-6 p-4 rounded-xl bg-primary/10 border border-primary/20">
+              <p className="text-sm text-muted-foreground">
+                <strong className="text-foreground">Note:</strong> Each hospital must upload and maintain its own patient dataset. 
+                The system does not use any centralized or pre-loaded datasets. All training is performed locally at each hospital.
+              </p>
             </div>
           </Card>
 

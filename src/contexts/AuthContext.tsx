@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 export type UserRole = "hospital" | "admin";
 export const DEFAULT_USER_ROLE: UserRole = "hospital";
@@ -46,6 +46,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   });
   const [isLoading, setIsLoading] = useState(false);
+
+  // Initialize admin account on component mount
+  useEffect(() => {
+    const users = JSON.parse(localStorage.getItem("heartfl-users") || "[]") as StoredUser[];
+    const adminExists = users.some((u) => u.username === "admin" && u.role === "admin");
+    
+    if (!adminExists) {
+      const adminUser: StoredUser = {
+        id: "admin-account",
+        username: "admin",
+        email: "admin@heartfl.system",
+        password: "admin@123",
+        role: "admin",
+      };
+      users.push(adminUser);
+      localStorage.setItem("heartfl-users", JSON.stringify(users));
+    }
+  }, []);
 
   const login = async (
     username: string,
