@@ -484,7 +484,7 @@ export default function Home() {
             <div className="pt-8 border-t border-border/50">
               <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                 <p className="text-sm text-muted-foreground">
-                  © 2024 HeartFL - Heart Disease Risk Prediction. Privacy-preserving ML for healthcare.
+                  © 2026 HeartFL - Heart Disease Risk Prediction. Privacy-preserving ML for healthcare.
                 </p>
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
                   <Shield className="w-4 h-4 text-success" />
