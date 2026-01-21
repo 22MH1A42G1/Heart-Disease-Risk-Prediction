@@ -223,7 +223,7 @@ export default function Home() {
                   </div>
                   <h3 className="text-xl font-semibold mb-2">About Project</h3>
                   <p className="text-muted-foreground text-sm">
-                    Learn about federated learning and our technology
+                    Learn about federated learning
                   </p>
                 </Card>
               </Link>
