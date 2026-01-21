@@ -49,8 +49,8 @@ export default function Home() {
               className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 animate-fade-in"
               style={{ animationDelay: "0.1s" }}
             >
-              Federated Learning–Based{" "}
-              <span className="text-gradient">Heart Disease Risk Prediction</span>
+              {" "}
+              <span className="text-gradient">Federated Learning–Based Heart Disease Risk Prediction</span>
             </h1>
 
             <p
