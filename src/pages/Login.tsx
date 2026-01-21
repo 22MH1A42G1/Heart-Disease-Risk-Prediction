@@ -5,12 +5,11 @@ import { GlowingButton } from "@/components/GlowingButton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
-import { Activity, Lock, User, Loader2, ArrowRight } from "lucide-react";
+import { Activity, IdCard, Loader2, ArrowRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 export default function Login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [registrationId, setRegistrationId] = useState("");
   const { login, isLoading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -18,7 +17,7 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const success = await login(username, password);
+    const success = await login(registrationId);
 
     if (success) {
       toast({
@@ -30,7 +29,7 @@ export default function Login() {
     } else {
       toast({
         title: "Login failed",
-        description: "Invalid credentials. Please try again.",
+        description: "Invalid Registration ID. Please try again.",
         variant: "destructive",
       });
     }
@@ -55,31 +54,15 @@ export default function Login() {
           <div className="glass-card rounded-3xl p-8 animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="username">Username</Label>
+                <Label htmlFor="registrationId">Registration ID</Label>
                 <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <IdCard className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                   <Input
-                    id="username"
+                    id="registrationId"
                     type="text"
-                    placeholder="johndoe"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    className="pl-10 h-12 bg-background/50"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                  <Input
-                    id="password"
-                    type="password"
-                    placeholder="••••••••"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="HOSP-12345"
+                    value={registrationId}
+                    onChange={(e) => setRegistrationId(e.target.value)}
                     className="pl-10 h-12 bg-background/50"
                     required
                   />

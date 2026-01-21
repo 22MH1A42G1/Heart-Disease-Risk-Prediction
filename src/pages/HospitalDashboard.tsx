@@ -19,7 +19,6 @@ import {
   Clock,
   Home,
   FileUp,
-  PlayCircle,
   TrendingUp,
 } from "lucide-react";
 
@@ -29,7 +28,6 @@ export default function HospitalDashboard() {
   const [isTraining, setIsTraining] = useState(false);
   const [trainingProgress, setTrainingProgress] = useState(0);
   const [modelTrained, setModelTrained] = useState(false);
-  const [algorithm, setAlgorithm] = useState("logistic");
   const [activeTab, setActiveTab] = useState("dashboard");
   
   // Patient data entry form state
@@ -53,16 +51,16 @@ export default function HospitalDashboard() {
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setSelectedFile(e.target.files[0]);
+      // Automatically start training with fixed optimized model (Logistic Regression)
+      handleTrainModel();
     }
   };
 
   const handleTrainModel = async () => {
-    if (!selectedFile) return;
-
     setIsTraining(true);
     setTrainingProgress(0);
 
-    // Simulate training progress
+    // Simulate training progress with fixed optimized model
     for (let i = 0; i <= 100; i += 10) {
       await new Promise((resolve) => setTimeout(resolve, 300));
       setTrainingProgress(i);
@@ -87,7 +85,6 @@ export default function HospitalDashboard() {
     { id: "dashboard", icon: Home, label: "Dashboard" },
     { id: "patient-entry", icon: Activity, label: "Patient Data Entry" },
     { id: "upload", icon: FileUp, label: "Upload Dataset" },
-    { id: "training", icon: PlayCircle, label: "Local Training" },
     { id: "status", icon: Activity, label: "Model Status" },
   ];
 
@@ -348,6 +345,12 @@ export default function HospitalDashboard() {
                         The system does not provide any default or centralized datasets. All data remains local and is never shared with other institutions.
                       </p>
                     </div>
+
+                    <div className="p-4 rounded-xl bg-secondary/10 border border-secondary/20">
+                      <p className="text-sm text-muted-foreground">
+                        <strong className="text-foreground">Automatic Training:</strong> Training starts automatically upon upload using the optimized Logistic Regression model.
+                      </p>
+                    </div>
                     
                     <div>
                       <Label htmlFor="dataset">Upload CSV (Patient Data)</Label>
@@ -359,6 +362,7 @@ export default function HospitalDashboard() {
                           accept=".csv"
                           onChange={handleFileUpload}
                           className="max-w-xs mx-auto"
+                          disabled={isTraining}
                         />
                         <p className="text-sm text-muted-foreground mt-2">
                           Upload CSV file with your hospital's patient health records
@@ -392,45 +396,13 @@ export default function HospitalDashboard() {
                         </div>
                       </div>
                     )}
-                  </div>
-                </Card>
-              )}
-
-              {/* Local Model Training Section */}
-              {activeTab === "training" && (
-                <Card className="glass-card rounded-3xl p-8 animate-fade-in-up">
-                  <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
-                    <Brain className="w-5 h-5 text-primary" />
-                    Local Model Training
-                  </h2>
-
-                  <div className="space-y-6">
-                    <div>
-                      <Label htmlFor="algorithm">Select Algorithm</Label>
-                      <Select value={algorithm} onValueChange={setAlgorithm}>
-                        <SelectTrigger className="h-12 bg-background/50">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="logistic">Logistic Regression</SelectItem>
-                          <SelectItem value="random_forest">Random Forest</SelectItem>
-                          <SelectItem value="neural_net">Neural Network</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <GlowingButton
-                      onClick={handleTrainModel}
-                      disabled={!selectedFile || isTraining}
-                      className="w-full h-14 text-lg"
-                      glowColor="primary"
-                    >
-                      {isTraining ? "Training..." : "Train Local Model"}
-                      <PlayCircle className="w-5 h-5 ml-2" />
-                    </GlowingButton>
 
                     {(isTraining || modelTrained) && (
                       <div className="space-y-4">
+                        <div className="p-4 rounded-xl bg-primary/10 border border-primary/20">
+                          <p className="text-sm font-semibold mb-2">Training with: Logistic Regression (Optimized Model)</p>
+                        </div>
+                        
                         <div>
                           <div className="flex justify-between mb-2">
                             <span className="text-sm font-medium">Training Progress</span>
@@ -494,17 +466,17 @@ export default function HospitalDashboard() {
                         <FileUp className="w-8 h-8 text-primary mb-3" />
                         <h4 className="font-semibold mb-1">Upload Dataset</h4>
                         <p className="text-sm text-muted-foreground">
-                          Upload patient data for local training
+                          Upload patient data - training starts automatically
                         </p>
                       </button>
                       <button
-                        onClick={() => setActiveTab("training")}
+                        onClick={() => setActiveTab("patient-entry")}
                         className="p-6 rounded-xl bg-muted/30 hover:bg-muted/50 transition-colors text-left"
                       >
-                        <PlayCircle className="w-8 h-8 text-secondary mb-3" />
-                        <h4 className="font-semibold mb-1">Start Training</h4>
+                        <Activity className="w-8 h-8 text-secondary mb-3" />
+                        <h4 className="font-semibold mb-1">Patient Entry</h4>
                         <p className="text-sm text-muted-foreground">
-                          Train model on local data securely
+                          Enter patient data for risk assessment
                         </p>
                       </button>
                     </div>
