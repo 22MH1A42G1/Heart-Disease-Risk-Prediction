@@ -16,6 +16,12 @@ from app.schemas import TokenData
 
 # Security configuration
 SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key-change-in-production")
+if SECRET_KEY == "your-secret-key-change-in-production":
+    import warnings
+    warnings.warn(
+        "Using default SECRET_KEY. Set SECRET_KEY environment variable for production!",
+        RuntimeWarning
+    )
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24  # 24 hours
 

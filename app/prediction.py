@@ -58,7 +58,9 @@ def calculate_shap_values(db: Session, features: np.ndarray) -> dict:
         weights = aggregated_data['weights']
         
         # Use the first model as representative for SHAP
-        # (In practice, you might want to average SHAP values across models)
+        # Note: This is a simplification. In a production system, you might want to
+        # average SHAP values across all models for a more accurate representation
+        # of the federated model's behavior
         representative_model = models[0]
         
         # Create SHAP explainer

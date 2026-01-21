@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from datetime import timedelta
+from typing import List
 import pickle
 
 from app.database import get_db, init_db, engine
@@ -29,10 +30,10 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# CORS configuration
+# CORS configuration - restrict in production
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, specify exact origins
+    allow_origins=["*"],  # TODO: In production, replace with specific origins
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -211,7 +212,7 @@ def get_global_model(
     return global_model
 
 
-@app.get("/federated/contributions", response_model=list[ModelContributionResponse])
+@app.get("/federated/contributions", response_model=List[ModelContributionResponse])
 def get_all_contributions(
     current_doctor: Doctor = Depends(get_current_doctor),
     db: Session = Depends(get_db)
