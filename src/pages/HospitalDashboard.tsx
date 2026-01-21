@@ -99,7 +99,7 @@ export default function HospitalDashboard() {
               <span className="text-sm font-medium">Hospital - FL Client</span>
             </div>
             <h1 className="text-3xl md:text-4xl font-bold mb-4">
-              Hospital <span className="text-gradient">Dashboard</span>
+               <span className="text-gradient">Hospital Dashboard</span>
             </h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Upload your hospital's local dataset and train models securely. Patient data never leaves this facility.
