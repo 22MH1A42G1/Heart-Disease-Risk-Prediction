@@ -255,7 +255,7 @@ export default function Prediction() {
               <span className="text-sm font-medium">Clinical Decision Support</span>
             </div>
             <h1 className="text-3xl md:text-4xl font-bold mb-4">
-              Cardiovascular <span className="text-gradient">Risk Stratification</span>
+               <span className="text-gradient">Cardiovascular Risk Stratification</span>
             </h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Enter patient clinical parameters below. Each prediction is performed using your hospital's locally trained model,
