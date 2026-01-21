@@ -173,7 +173,7 @@ export default function Home() {
                   <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br from-health/20 to-secondary/20 mb-4 group-hover:scale-110 transition-transform">
                     <Activity className="w-7 h-7 text-health" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">Cardiovascular Risk Assessment</h3>
+                  <h3 className="text-xl font-semibold mb-2">Heart Risk Assessment</h3>
                   <p className="text-muted-foreground text-sm">
                     AI-powered heart disease risk prediction and analysis
                   </p>
