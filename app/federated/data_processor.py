@@ -4,10 +4,10 @@ Data processing and validation for federated learning
 import pandas as pd
 from io import StringIO
 from fastapi import HTTPException
-from typing import Tuple
+from typing import Tuple, List
 
 
-def get_required_columns():
+def get_required_columns() -> List[str]:
     """
     Get list of required columns for heart disease dataset
     
@@ -20,7 +20,7 @@ def get_required_columns():
     ]
 
 
-def get_feature_names():
+def get_feature_names() -> List[str]:
     """
     Get the list of feature names for the model (without target)
     
