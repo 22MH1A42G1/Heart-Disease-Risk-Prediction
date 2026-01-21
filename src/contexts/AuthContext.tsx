@@ -2,21 +2,20 @@ import { createContext, useContext, useState, ReactNode } from "react";
 
 interface User {
   id: string;
-  username: string;
-  email: string;
+  registrationId: string;
 }
 
 interface StoredUser {
   id: string;
-  username: string;
-  email: string;
-  password: string;
+  hospitalName: string;
+  doctorName: string;
+  registrationId: string;
 }
 
 interface AuthContextType {
   user: User | null;
-  login: (username: string, password: string) => Promise<boolean>;
-  register: (username: string, email: string, password: string) => Promise<boolean>;
+  login: (registrationId: string) => Promise<boolean>;
+  register: (hospitalName: string, doctorName: string, registrationId: string) => Promise<boolean>;
   logout: () => void;
   isLoading: boolean;
 }
@@ -30,20 +29,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return null;
     }
     const parsed = JSON.parse(saved) as Partial<User>;
-    if (!parsed.id || !parsed.username) {
+    if (!parsed.id || !parsed.registrationId) {
       return null;
     }
     return {
       id: parsed.id,
-      username: parsed.username,
-      email: parsed.email ?? "",
+      registrationId: parsed.registrationId,
     };
   });
   const [isLoading, setIsLoading] = useState(false);
 
   const login = async (
-    username: string,
-    password: string
+    registrationId: string
   ): Promise<boolean> => {
     setIsLoading(true);
     // Simulate API call
@@ -52,14 +49,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Get registered users from localStorage
     const users = JSON.parse(localStorage.getItem("heartfl-users") || "[]") as StoredUser[];
     const foundUser = users.find(
-      (u) => u.username === username && u.password === password
+      (u) => u.registrationId === registrationId
     );
 
     if (foundUser) {
       const loggedInUser = {
         id: foundUser.id,
-        username: foundUser.username,
-        email: foundUser.email,
+        registrationId: foundUser.registrationId,
       };
       setUser(loggedInUser);
       localStorage.setItem("heartfl-user", JSON.stringify(loggedInUser));
@@ -72,9 +68,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const register = async (
-    username: string,
-    email: string,
-    password: string
+    hospitalName: string,
+    doctorName: string,
+    registrationId: string
   ): Promise<boolean> => {
     setIsLoading(true);
     // Simulate API call
@@ -82,18 +78,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const users = JSON.parse(localStorage.getItem("heartfl-users") || "[]") as StoredUser[];
     
-    // Check if user already exists
-    if (users.some((u) => u.username === username || u.email === email)) {
+    // Check if registration ID already exists
+    if (users.some((u) => u.registrationId === registrationId)) {
       setIsLoading(false);
       return false;
     }
 
-    // Register new hospital user
+    // Register new hospital user - store only ID
     const newUser: StoredUser = {
       id: crypto.randomUUID(),
-      username,
-      email,
-      password,
+      hospitalName,
+      doctorName,
+      registrationId,
     };
 
     users.push(newUser);
