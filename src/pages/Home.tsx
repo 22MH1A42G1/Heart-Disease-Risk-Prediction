@@ -369,7 +369,7 @@ export default function Home() {
             <div className="pt-8 border-t border-border/50">
               <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                 <p className="text-sm text-muted-foreground">
-                  © 2026 HeartFL - Heart Disease Risk Prediction. Hospital-driven federated learning with no centralized admin authority.
+                  © 2026 HeartFL - Heart Disease Risk Prediction.
                 </p>
               </div>
             </div>
