@@ -52,7 +52,7 @@ export default function About() {
           {/* Header */}
           <div className="text-center mb-12 animate-fade-in">
             <h1 className="text-3xl md:text-4xl font-bold mb-4">
-              About <span className="text-gradient">HeartFL</span>
+              <span className="text-gradient">About HeartFL</span>
             </h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Understanding the Heart Disease Risk Prediction system powered by
