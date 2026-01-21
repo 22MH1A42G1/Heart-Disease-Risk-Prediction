@@ -10,12 +10,13 @@ interface StoredUser {
   hospitalName: string;
   doctorName: string;
   registrationId: string;
+  password: string;
 }
 
 interface AuthContextType {
   user: User | null;
-  login: (registrationId: string) => Promise<boolean>;
-  register: (hospitalName: string, doctorName: string, registrationId: string) => Promise<boolean>;
+  login: (registrationId: string, password: string) => Promise<boolean>;
+  register: (hospitalName: string, doctorName: string, registrationId: string, password: string) => Promise<boolean>;
   logout: () => void;
   isLoading: boolean;
 }
@@ -40,7 +41,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(false);
 
   const login = async (
-    registrationId: string
+    registrationId: string,
+    password: string
   ): Promise<boolean> => {
     setIsLoading(true);
     // Simulate API call
@@ -49,7 +51,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Get registered users from localStorage
     const users = JSON.parse(localStorage.getItem("heartfl-users") || "[]") as StoredUser[];
     const foundUser = users.find(
-      (u) => u.registrationId === registrationId
+      (u) => u.registrationId === registrationId && u.password === password
     );
 
     if (foundUser) {
@@ -70,7 +72,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const register = async (
     hospitalName: string,
     doctorName: string,
-    registrationId: string
+    registrationId: string,
+    password: string
   ): Promise<boolean> => {
     setIsLoading(true);
     // Simulate API call
@@ -84,12 +87,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return false;
     }
 
-    // Register new hospital user - store only ID
+    // Register new hospital user - store with password
     const newUser: StoredUser = {
       id: crypto.randomUUID(),
       hospitalName,
       doctorName,
       registrationId,
+      password,
     };
 
     users.push(newUser);

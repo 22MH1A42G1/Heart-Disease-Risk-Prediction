@@ -5,26 +5,72 @@ import { GlowingButton } from "@/components/GlowingButton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
-import { Activity, Building2, User, IdCard, Loader2, ArrowRight } from "lucide-react";
+import { Activity, Building2, User, IdCard, Loader2, ArrowRight, Lock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 export default function Register() {
   const [hospitalName, setHospitalName] = useState("");
   const [doctorName, setDoctorName] = useState("");
   const [registrationId, setRegistrationId] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const { register, isLoading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  const validatePassword = (password: string): string | null => {
+    if (password.length < 8) {
+      return "Password must be at least 8 characters long";
+    }
+    if (!/[A-Z]/.test(password)) {
+      return "Password must include at least one uppercase letter";
+    }
+    if (!/[a-z]/.test(password)) {
+      return "Password must include at least one lowercase letter";
+    }
+    if (!/[0-9]/.test(password)) {
+      return "Password must include at least one number";
+    }
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+      return "Password must include at least one special character";
+    }
+    return null;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setPasswordError("");
 
-    const success = await register(hospitalName, doctorName, registrationId);
+    // Validate password
+    const passwordValidationError = validatePassword(password);
+    if (passwordValidationError) {
+      setPasswordError(passwordValidationError);
+      toast({
+        title: "Invalid password",
+        description: passwordValidationError,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Check if passwords match
+    if (password !== confirmPassword) {
+      setPasswordError("Passwords do not match");
+      toast({
+        title: "Password mismatch",
+        description: "Password and Confirm Password must match",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const success = await register(hospitalName, doctorName, registrationId, password);
 
     if (success) {
       toast({
         title: "Registration successful!",
-        description: "Please login with your Registration ID.",
+        description: "Please login with your Registration ID and password.",
       });
       navigate("/login");
     } else {
@@ -100,6 +146,44 @@ export default function Register() {
                     required
                   />
                 </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="pl-10 h-12 bg-background/50"
+                    required
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Minimum 8 characters, include uppercase, lowercase, number, and special character
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <Input
+                    id="confirmPassword"
+                    type="password"
+                    placeholder="••••••••"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="pl-10 h-12 bg-background/50"
+                    required
+                  />
+                </div>
+                {passwordError && (
+                  <p className="text-xs text-destructive">{passwordError}</p>
+                )}
               </div>
 
               <GlowingButton
