@@ -10,7 +10,7 @@ interface StoredUser {
   hospitalName: string;
   doctorName: string;
   registrationId: string;
-  password: string;
+  password: string; // Note: In production, passwords should be hashed before storage
 }
 
 interface AuthContextType {
