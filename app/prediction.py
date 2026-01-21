@@ -6,7 +6,8 @@ import shap
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
 
-from app.federated import predict_with_global_model, get_feature_names
+from app.federated import predict_with_global_model
+from app.federated.data_processor import get_feature_names
 from app.schemas import PredictionInput, PredictionOutput
 
 
