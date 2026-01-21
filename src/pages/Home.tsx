@@ -40,10 +40,7 @@ export default function Home() {
         {/* Hero Section */}
         <section className="container mx-auto px-4 py-20 md:py-32">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/10 text-secondary mb-6 animate-fade-in">
-              <Stethoscope className="w-4 h-4" />
-              <span className="text-sm font-medium">Production-Level Medical Platform</span>
-            </div>
+          
 
             <h1
               className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 animate-fade-in"
@@ -64,12 +61,7 @@ export default function Home() {
               className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in"
               style={{ animationDelay: "0.3s" }}
             >
-              <Link to={ctaPath}>
-                <GlowingButton size="lg" className="text-lg px-8">
-                  Cardiovascular Risk Assessment
-                  <ArrowRight className="w-5 h-5 ml-2" />
-                </GlowingButton>
-              </Link>
+              
               {!user && (
                 <Link to="/login">
                   <GlowingButton variant="outline" size="lg" glowColor="primary" className="text-lg px-8 border-2">
@@ -109,7 +101,7 @@ export default function Home() {
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                How It <span className="text-gradient">Works</span>
+                 <span className="text-gradient">How It Works</span>
               </h2>
             </div>
 
@@ -168,7 +160,7 @@ export default function Home() {
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Quick <span className="text-gradient">Actions</span>
+                 <span className="text-gradient">Quick Actions</span>
               </h2>
               <p className="text-muted-foreground">
                 Access key features and dashboards
@@ -244,7 +236,7 @@ export default function Home() {
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Federated Learning <span className="text-gradient">Architecture</span>
+                <span className="text-gradient">Federated Learning Architecture</span>
               </h2>
               <p className="text-muted-foreground">
                 Privacy-preserving collaborative training without data sharing
@@ -299,96 +291,8 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Security & Compliance Section */}
-        <section className="container mx-auto px-4 py-20">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Security & <span className="text-gradient">Compliance</span>
-              </h2>
-              <p className="text-muted-foreground">
-                Industry-grade security for healthcare data
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card className="glass-card rounded-2xl p-8">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-success/10 flex items-center justify-center shrink-0">
-                    <Shield className="w-6 h-6 text-success" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold mb-2">HIPAA-Aligned Architecture</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Our federated learning approach aligns with HIPAA requirements by ensuring patient data never leaves local healthcare facilities.
-                    </p>
-                  </div>
-                </div>
-              </Card>
-
-              <Card className="glass-card rounded-2xl p-8">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                    <Lock className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold mb-2">End-to-End Encryption</h3>
-                    <p className="text-sm text-muted-foreground">
-                      All model updates and communications are encrypted during transmission, ensuring data security throughout the learning process.
-                    </p>
-                  </div>
-                </div>
-              </Card>
-
-              <Card className="glass-card rounded-2xl p-8">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-health/10 flex items-center justify-center shrink-0">
-                    <Database className="w-6 h-6 text-health" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold mb-2">No Raw Patient Data Sharing</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Only model parameters are exchanged between institutions. Individual patient records remain completely private and local.
-                    </p>
-                  </div>
-                </div>
-              </Card>
-
-              <Card className="glass-card rounded-2xl p-8">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center shrink-0">
-                    <Brain className="w-6 h-6 text-secondary" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold mb-2">Secure Aggregation in FL</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Advanced cryptographic techniques ensure that even model updates cannot reveal individual patient information.
-                    </p>
-                  </div>
-                </div>
-              </Card>
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="container mx-auto px-4 py-20">
-          <div className="max-w-3xl mx-auto text-center glass-card rounded-3xl p-12">
-            <Activity className="w-16 h-16 mx-auto mb-6 text-secondary" />
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Ready for Cardiovascular Risk Assessment?
-            </h2>
-            <p className="text-muted-foreground mb-8">
-              Trusted by healthcare professionals for accurate heart disease risk assessment using privacy-preserving federated learning.
-            </p>
-            <Link to={ctaPath}>
-              <GlowingButton size="lg" glowColor="heart" className="text-lg px-10">
-                Access Hospital Dashboard
-                <ArrowRight className="w-5 h-5 ml-2" />
-              </GlowingButton>
-            </Link>
-          </div>
-        </section>
+        
+        
 
         {/* Footer */}
         <footer className="border-t border-border/50 mt-20">
@@ -442,11 +346,7 @@ export default function Home() {
                       Prediction Tool
                     </Link>
                   </li>
-                  <li>
-                    <Link to="/about" className="hover:text-primary transition-colors">
-                      Documentation
-                    </Link>
-                  </li>
+
                 </ul>
               </div>
 
@@ -471,10 +371,6 @@ export default function Home() {
                 <p className="text-sm text-muted-foreground">
                   © 2026 HeartFL - Heart Disease Risk Prediction. Hospital-driven federated learning with no centralized admin authority.
                 </p>
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <Shield className="w-4 h-4 text-success" />
-                  <span>HIPAA-Aligned Architecture</span>
-                </div>
               </div>
             </div>
           </div>
