@@ -86,7 +86,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // Register new hospital user - store only ID
     const newUser: StoredUser = {
-      id: registrationId,
+      id: crypto.randomUUID(),
       hospitalName,
       doctorName,
       registrationId,
