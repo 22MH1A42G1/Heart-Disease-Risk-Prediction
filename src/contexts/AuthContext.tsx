@@ -19,6 +19,7 @@ interface AuthContextType {
   register: (hospitalName: string, doctorName: string, registrationId: string, password: string) => Promise<boolean>;
   logout: () => void;
   isLoading: boolean;
+  getUserDetails: () => StoredUser | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -107,8 +108,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem("heartfl-user");
   };
 
+  // Get full user details from localStorage
+  const getUserDetails = (): StoredUser | null => {
+    if (!user) return null;
+    const users = JSON.parse(localStorage.getItem("heartfl-users") || "[]") as StoredUser[];
+    return users.find((u) => u.id === user.id) || null;
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, isLoading }}>
+    <AuthContext.Provider value={{ user, login, register, logout, isLoading, getUserDetails }}>
       {children}
     </AuthContext.Provider>
   );

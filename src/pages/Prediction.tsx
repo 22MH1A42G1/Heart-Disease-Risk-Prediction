@@ -6,9 +6,11 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Activity, Loader2, AlertTriangle, CheckCircle, Info, BarChart3, Stethoscope } from "lucide-react";
+import { Activity, Loader2, AlertTriangle, CheckCircle, Info, BarChart3, Stethoscope, Download } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate } from "react-router-dom";
+import { generatePDFReport } from "@/lib/pdfGenerator";
+import { Button } from "@/components/ui/button";
 
 interface PredictionResult {
   risk: "High" | "Medium" | "Low";
@@ -19,6 +21,7 @@ interface PredictionResult {
     importance: number;
     color: string;
   }[];
+  timestamp?: string; // Add timestamp field
 }
 
 interface FormField {
@@ -36,7 +39,7 @@ const MODEL_TYPE_LABELS = {
 } as const;
 
 export default function Prediction() {
-  const { user } = useAuth();
+  const { user, getUserDetails } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [result, setResult] = useState<PredictionResult | null>(null);
@@ -146,10 +149,21 @@ export default function Prediction() {
 
     const total = cholImportance + bpImportance + ageImportance + diabetesImportance;
 
+    // Generate timestamp for the prediction
+    const timestamp = new Date().toLocaleString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
+
     setResult({
       risk: riskLevel,
       probability: probability * 100,
       suggestions,
+      timestamp,
       featureImportance: [
         {
           feature: "Cholesterol",
@@ -176,6 +190,27 @@ export default function Prediction() {
 
     setIsLoading(false);
     setProgress(0);
+  };
+
+  /**
+   * Handles the download report functionality
+   * Generates a PDF report with doctor info, patient details, and prediction results
+   */
+  const handleDownloadReport = () => {
+    if (!result) return;
+
+    // Get full user details including doctor name and hospital name
+    const userDetails = getUserDetails();
+    if (!userDetails) return;
+
+    // Generate the PDF report
+    generatePDFReport({
+      doctorName: userDetails.doctorName,
+      hospitalName: userDetails.hospitalName,
+      patientDetails: formData,
+      result: result,
+      timestamp: result.timestamp || new Date().toLocaleString(),
+    });
   };
 
   const formFields: FormField[] = [
@@ -483,6 +518,17 @@ export default function Prediction() {
                             </li>
                           ))}
                         </ul>
+                      </div>
+
+                      {/* Download Report Button */}
+                      <div className="pt-4 border-t">
+                        <Button
+                          onClick={handleDownloadReport}
+                          className="w-full h-12 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white"
+                        >
+                          <Download className="w-5 h-5 mr-2" />
+                          Download Report (PDF)
+                        </Button>
                       </div>
                     </div>
                   ) : (
