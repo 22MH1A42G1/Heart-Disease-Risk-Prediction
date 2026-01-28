@@ -199,18 +199,35 @@ export default function Prediction() {
   const handleDownloadReport = () => {
     if (!result) return;
 
-    // Get full user details including doctor name and hospital name
-    const userDetails = getUserDetails();
-    if (!userDetails) return;
+    try {
+      // Get full user details including doctor name and hospital name
+      const userDetails = getUserDetails();
+      if (!userDetails) {
+        console.error("Unable to retrieve user details");
+        return;
+      }
 
-    // Generate the PDF report
-    generatePDFReport({
-      doctorName: userDetails.doctorName,
-      hospitalName: userDetails.hospitalName,
-      patientDetails: formData,
-      result: result,
-      timestamp: result.timestamp || new Date().toLocaleString(),
-    });
+      // Generate the PDF report with consistent timestamp formatting
+      const timestamp = result.timestamp || new Date().toLocaleString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      });
+
+      generatePDFReport({
+        doctorName: userDetails.doctorName,
+        hospitalName: userDetails.hospitalName,
+        patientDetails: formData,
+        result: result,
+        timestamp: timestamp,
+      });
+    } catch (error) {
+      console.error("Failed to generate PDF report:", error);
+      // In a production app, you might want to show a toast notification here
+    }
   };
 
   const formFields: FormField[] = [

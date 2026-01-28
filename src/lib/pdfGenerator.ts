@@ -85,14 +85,30 @@ const VALUE_LABELS: Record<string, string> = {
  * Generates a PDF report for the heart disease risk prediction
  * @param data - Report data including doctor info, patient details, and prediction results
  * @returns void - Opens/downloads the PDF in the browser
+ * @throws Error if required data is missing or PDF generation fails
  */
 export function generatePDFReport(data: ReportData): void {
-  // Initialize jsPDF with A4 format
-  const doc = new jsPDF({
-    orientation: "portrait",
-    unit: "mm",
-    format: "a4",
-  });
+  try {
+    // Validate required data
+    if (!data.doctorName || !data.hospitalName) {
+      throw new Error("Doctor name and hospital name are required");
+    }
+    if (!data.patientDetails) {
+      throw new Error("Patient details are required");
+    }
+    if (!data.result) {
+      throw new Error("Prediction result is required");
+    }
+    if (!data.timestamp) {
+      throw new Error("Timestamp is required");
+    }
+
+    // Initialize jsPDF with A4 format
+    const doc = new jsPDF({
+      orientation: "portrait",
+      unit: "mm",
+      format: "a4",
+    });
 
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
@@ -325,4 +341,8 @@ export function generatePDFReport(data: ReportData): void {
   
   // Save and open the PDF in browser
   doc.save(fileName);
+  } catch (error) {
+    console.error("Error generating PDF report:", error);
+    throw new Error("Failed to generate PDF report. Please try again.");
+  }
 }
