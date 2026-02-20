@@ -1,12 +1,97 @@
-fastapi==0.109.1
-uvicorn[standard]==0.24.0
-sqlalchemy==2.0.23
-psycopg2-binary==2.9.9
-pydantic[email]==2.5.0
-python-jose[cryptography]==3.3.0
-passlib[bcrypt]==1.7.4
-python-multipart==0.0.18
-scikit-learn==1.3.2
-pandas==2.1.3
-numpy==1.26.2
-shap==0.43.0
+# HeartFL - Heart Disease Prediction with Federated Learning
+# Python 3.13.7 - Last Updated: February 20, 2026
+
+# ============================================================================
+# CORE DEPENDENCIES (Required for basic functionality)
+# ============================================================================
+
+# Web Framework
+Django==5.2.11
+
+# Environment Configuration
+python-dotenv==1.0.0
+
+# Database
+# SQLite3 is included with Python
+
+# ============================================================================
+# DATA PROCESSING & MACHINE LEARNING
+# ============================================================================
+
+# Numerical Computing
+numpy>=1.24.0
+
+# Data Analysis & CSV Processing
+pandas>=2.0.0
+
+# Machine Learning & Inference
+scikit-learn>=1.3.0
+
+# ============================================================================
+# REPORT GENERATION
+# ============================================================================
+
+# PDF Report Generation
+reportlab>=4.0.0
+
+# Image Processing (for report assets)
+Pillow>=10.0.0
+
+# ============================================================================
+# DATABASE & ODM (Optional - for MongoDB support)
+# ============================================================================
+
+# MongoDB Python Driver
+pymongo>=4.5.0
+
+# MongoDB Object-Document Mapper
+mongoengine>=0.27.0
+
+# ============================================================================
+# COMMUNICATION (Optional - for SMS OTP)
+# ============================================================================
+
+# Twilio SMS Service
+twilio>=8.10.0
+
+# ============================================================================
+# PRODUCTION DEPLOYMENT (Recommended for production)
+# ============================================================================
+
+# Production WSGI Server (instead of Django development server)
+# gunicorn>=21.0.0
+
+# Static File Hosting / CDN (optional)
+# whitenoise>=6.5.0
+
+# ============================================================================
+# DEVELOPMENT & TESTING (Optional)
+# ============================================================================
+
+# pytest-django==4.5.2
+# pytest-cov==4.1.0
+# black==23.7.0
+# flake8==6.0.0
+# isort==5.12.0
+
+# ============================================================================
+# NOTES
+# ============================================================================
+# 
+# Installation:
+#   pip install -r requirements.txt
+#
+# For production deployment, also install:
+#   pip install gunicorn whitenoise
+#
+# To include development/testing tools, uncomment the DEVELOPMENT section
+#
+# Optional Features:
+#   - MongoDB support: ensure pymongo and mongoengine are installed
+#   - SMS OTP: ensure twilio is installed and TWILIO_* env vars are set
+#   - PDF reports: reportlab and Pillow are required
+#
+# Django Settings:
+#   - See heartfl/settings.py for configuration
+#   - Use .env file for sensitive credentials
+#
